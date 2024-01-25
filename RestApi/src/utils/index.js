@@ -2,17 +2,20 @@
 
 const lodash = require('lodash')
 const crypto = require('crypto')
+const { Types } = require('mongoose')
 
-// use pick field in json to small json with picked fields
+const toObjectIdMongo = (id) => new Types.ObjectId(id)
+
+// Return Json with picked fields
 const getInfoData = ({ fileds = [], object = {} }) => {
     return lodash.pick(object, fileds)
 }
 
-// convert Array ['a','b'] to Object { 'a': 1, 'b': 1 }
+// Convert Array ['a','b'] to Object { 'a': 1, 'b': 1 }
 const getSelectData = ({ select = [] }) => {
     return Object.fromEntries(select.map(el => [el, 1]))
 }
-// convert Array ['a','b'] to Object { 'a': 0, 'b': 0 }
+// Convert Array ['a','b'] to Object { 'a': 0, 'b': 0 }
 const getUnSelectData = ({ select = [] }) => {
     return Object.fromEntries(select.map(el => [el, 0]))
 }
@@ -47,6 +50,7 @@ const updateNestedObjectParser = object => {
 }
 
 module.exports = {
+    toObjectIdMongo,
     getInfoData,
     getSelectData,
     getUnSelectData,

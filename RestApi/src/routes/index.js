@@ -8,6 +8,7 @@ router.get('/checkstatus', (req, res, next) => {
     })
 })
 
-router.use('/v1/api/access', require('./access'))
+router.use('/v1/api/access1', require('./access_1'))
+router.use('/v1/api/access2', require('./access_2'))
 
 module.exports = router;

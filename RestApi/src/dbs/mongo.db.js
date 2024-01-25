@@ -19,8 +19,9 @@ class Database {
         }
         mongoose.connect(connectString, {
             maxPoolSize: 50     // after 50th need await (line up) to excute
-        }).then(_ => console.log('Connected Mongodb Success'))
-            .catch(err => console.log('Error Connect!'))
+        })
+            // .then(_ => console.log('Connected Mongodb Success'))
+            .catch(err => console.log('Error Connect Mongo Db: \n', err))
     }
     static getInstance() {
         if (!Database.instance) {

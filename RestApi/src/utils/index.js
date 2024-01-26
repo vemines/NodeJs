@@ -7,8 +7,8 @@ const { Types } = require('mongoose')
 const toObjectIdMongo = (id) => new Types.ObjectId(id)
 
 // Return Json with picked fields
-const getInfoData = ({ fileds = [], object = {} }) => {
-    return lodash.pick(object, fileds)
+const getInfoData = ({ fields = [], object = {} }) => {
+    return lodash.pick(object, fields)
 }
 
 // Convert Array ['a','b'] to Object { 'a': 1, 'b': 1 }

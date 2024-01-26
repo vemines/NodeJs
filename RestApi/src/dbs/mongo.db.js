@@ -13,10 +13,10 @@ class Database {
     //connect
     connect(type = 'mongodb') {
         // dev
-        if (1 === 1) {
-            mongoose.set('debug', true)
-            mongoose.set('debug', { color: true })
-        }
+        // if (1 === 1) {
+        //     mongoose.set('debug', true)
+        //     mongoose.set('debug', { color: true })
+        // }
         mongoose.connect(connectString, {
             maxPoolSize: 50     // after 50th need await (line up) to excute
         })

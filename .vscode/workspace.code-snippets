@@ -1,0 +1,89 @@
+{
+  "Print to console": {
+    "scope": "javascript,typescript",
+    "prefix": "log",
+    "body": ["console.log(`${$1}`);"],
+    "description": "Log output to console"
+  },
+  "Mongo model": {
+    "prefix": "imgmd",
+    "body": [
+      "'use strict'",
+      "const { model, Schema, Types } = require('mongoose');",
+      "const DOCUMENT_NAME = '${2:InitTemp}'",
+      "const COLLECTION_NAME = '${2:InitTemps}'",
+      "",
+      "// Declare the Schema of the Mongo model",
+      "const ${2:initTemp}Schema = new Schema({",
+      "    name_field: { type: String, required: true, default: '' },",
+      "}, {",
+      "    timestamps: true,",
+      "    collection: COLLECTION_NAME",
+      "});",
+      "",
+      "//Export the model",
+      "module.exports = model(DOCUMENT_NAME, ${2:initTemp}Schema);"
+    ],
+    "description": "Init Mongoose model"
+  },
+  "Mongo repository": {
+    "prefix": "imgrepo",
+    "body": [
+      "'use strict';",
+      "",
+      "const ${2:InitTemp}Model = require('../init.temp.model');",
+      "",
+      "const find${2:InitTemp}ById = async (id) => {",
+      "  const ${2:initTemp} = await ${2:InitTemp}Model.findById(id);",
+      "",
+      "  return ${2:initTemp};",
+      "};",
+      "",
+      "module.exports = {",
+      "  find${2:InitTemp}ById,",
+      "};"
+    ],
+    "description": "Init Mongoose repository"
+  },
+  "Mongo service": {
+    "prefix": "imgsvc",
+    "body": [
+      "'use strict';",
+      "",
+      "const { find${2:InitTemp}ById } = require('../models/repositories/init.temp.repo');",
+      "",
+      "class ${2:InitTemp}Service {",
+      "  static findById = async (id) => {",
+      "    return find${2:InitTemp}ById(id);",
+      "  };",
+      "};",
+      "",
+      "module.exports = ${2:InitTemp}Service;"
+    ],
+    "description": "Init Mongoose service"
+  },
+  "Mongoose Controller": {
+    "prefix": "imgcontr",
+    "body": [
+      "'use strict';",
+      "",
+      "const ${2:InitTemp}Service = require('../services/init.temp.svc');",
+      "",
+      "class ${2:InitTemp}Controller {",
+      "  static ${3:functionName} = async (req, res, next) => {",
+      "    new SuccessRequest({",
+      "      message: '${4:Action Name} Success',",
+      "      metadata: await ${2:InitTemp}Service.findById(req.body.id),",
+      "      // metadata: await ${2:InitTemp}Service.findById({",
+      "      //   refreshToken: req.refreshToken,",
+      "      //   user: req.user,",
+      "      // }),",
+      "    }).send(res);",
+      "  };",
+      "};",
+      "",
+      "module.exports = ${2:InitTemp}Controller;"
+    ],
+    "description": "Init Mongoose controller"
+  }
+}

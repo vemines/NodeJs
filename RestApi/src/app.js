@@ -19,6 +19,8 @@ app.use(compression())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.set('trust proxy', true)
+
 //router
 app.use(require('./routes/'))
 

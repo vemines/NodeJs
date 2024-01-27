@@ -1,13 +1,14 @@
 'use strict'
 
 const { model, Schema, Types } = require('mongoose');
-const DOCUMENT_NAME = 'apikey'
-const COLLECTION_NAME = 'apikeys'
+const DOCUMENT_NAME = 'api_key'
+const COLLECTION_NAME = 'api_keys'
 
 // Declare the Schema of the Mongo model 
 const apiKeySchema = new Schema({
     key: { type: String, required: true, unique: true },
-    accountId: { type: Types.ObjectId, required: true },
+    usr_id: { type: String, default: "" },
+    ip_address: { type: String, required: true },
     status: { type: Boolean, default: true, },
     permissions: { type: [String], default: ['akp00001'], enum: ['akp00001', 'akp00002', 'akp00003'] },// Api key permissions
 }, {

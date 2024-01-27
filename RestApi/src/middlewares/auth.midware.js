@@ -1,11 +1,13 @@
 'use strict'
 
 const { UnAuthorizedError } = require('../utils/error.response')
-const { findById } = require('../services/api.key.svc')
+const { handleFindApiKey } = require('../services/api.key.svc')
 const { asyncHandler } = require('../utils/async.handler.util')
-const JWT = require('jsonwebtoken')
+
 const KeyTokenSvc1 = require('../services/key.token.1.svc')
 const KeyTokenSvc2 = require('../services/key.token.2.svc')
+
+const verifyJWT = require('../utils/auth.util')
 
 const HEADER = {
     API_KEY: 'x-api-key',
@@ -15,42 +17,30 @@ const HEADER = {
 }
 
 const apikey = async (req, res, next) => {
-    try {
-        // check api key
-        const key = req.headers[HEADER.API_KEY]?.toString()
-        if (!key) {
-            throw new UnAuthorizedError('API key missing')
-        }
-
-        // check authorization
-        const objKey = await findById(key)
-        if (!objKey) {
-            throw new UnAuthorizedError('Forbidden Error')
-        }
-        req.objKey = objKey
-        return next()
-    } catch (error) {
-        console.log(error)
+    // check api key
+    const key = req.headers[HEADER.API_KEY]
+    if (!key) {
+        throw new UnAuthorizedError('API key missing')
     }
+    // check authorization
+    const objKey = await handleFindApiKey(key)
+    if (!objKey) {
+        throw new UnAuthorizedError('Forbidden Error')
+    }
+    req.objKey = objKey
+    return next()
 }
 
-const permission = (permission) => {
-    return (req, res, next) => {
-        if (!req.objKey.permissions) {
-            return res.status(403).json({
-                message: 'permission denied',
-            })
-        }
-
-        console.log('permissions::', req.objKey.permissions)
-        const validPermission = req.objKey.permissions.includes(permission)
-        if (!validPermission) {
-            return res.status(403).json({
-                message: 'permission denied',
-            })
-        }
-        return next()
+const permission = (permission) => async (req, res, next) => {
+    if (!req.objKey.permissions) {
+        throw new UnAuthorizedError('Permission denied')
     }
+
+    const validPermission = req.objKey.permissions.includes(permission)
+    if (!validPermission) {
+        throw new UnAuthorizedError('Permission denied')
+    }
+    return next()
 }
 
 const authentication = asyncHandler(async (req, res, next) => {
@@ -65,13 +55,13 @@ const authentication = asyncHandler(async (req, res, next) => {
     if (!!req.headers[HEADER.ACCESSTOKEN] && !!req.headers[HEADER.REFRESHTOKEN]) {
         const access_token = req.headers[HEADER.ACCESSTOKEN]
         const refresh_token = req.headers[HEADER.REFRESHTOKEN]
-        let decodeUser = JWT.verify(access_token, keyStore.public_key)
+        let decodeUser = verifyJWT(access_token, keyStore.public_key)
         if (!!decodeUser) {
             setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug)
             return next()
         }
 
-        decodeUser = JWT.verify(refresh_token, keyStore.private_key)
+        decodeUser = verifyJWT(refresh_token, keyStore.private_key)
         if (!!decodeUser) {
             setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug)
             return next()
@@ -92,13 +82,13 @@ const authentication2 = asyncHandler(async (req, res, next) => {
     if (!!req.headers[HEADER.ACCESSTOKEN] && !!req.headers[HEADER.REFRESHTOKEN]) {
         const access_token = req.headers[HEADER.ACCESSTOKEN]
         const refresh_token = req.headers[HEADER.REFRESHTOKEN]
-        let decodeUser = JWT.verify(access_token, keyStore.public_key)
+        let decodeUser = verifyJWT(access_token, keyStore.public_key)
         if (!!decodeUser) {
             setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug)
             return next()
         }
 
-        decodeUser = JWT.verify(refresh_token, keyStore.public_key)
+        decodeUser = verifyJWT(refresh_token, keyStore.public_key)
         if (!!decodeUser) {
             setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug)
             return next()

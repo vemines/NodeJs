@@ -1,14 +1,17 @@
 'use strict'
 
 const ApiKeyService = require('../services/api.key.svc')
+const { SuccessResponse, CreatedResponse } = require('../utils/success.response')
 
 class ApiKeyController {
-    static createTempApiKey = async () => {
-        new SuccessRequest({
-            message: 'Action Name Success',
-            metadata: await ApiKeyService.createTempApiKey(),
+    static createNewApiKey = async (req, res, next) => {
+        new CreatedResponse({
+            message: 'Create Api key Success',
+            metadata: await ApiKeyService.handleCreateApiKey(
+                req.ip
+            ),
         }).send(res)
     }
 }
 
-module.exports = new ApiKeyController()
+module.exports = ApiKeyController

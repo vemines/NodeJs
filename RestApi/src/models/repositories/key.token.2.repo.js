@@ -70,7 +70,6 @@ const moveToSuspiciousToken = async (usr_slug, refresh_token, access_token) => {
             usr_id: tokenData.usr_id,
             usr_slug: tokenData.usr_slug,
             public_key: tokenData.public_key,
-            // private_key: tokenData.private_key,
             refresh_token: tokenData.refresh_token,
         })
         await keyTokenModel.updateOne(

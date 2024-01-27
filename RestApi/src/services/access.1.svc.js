@@ -15,7 +15,6 @@ class AccessService1 {
     static refreshToken = async ({ keyStore, user, refresh_token, access_token }) => {
         const { usr_slug, email, _id } = user
 
-
         // check token isUsed
         if (keyStore.refresh_tokens_used.includes(refresh_token)) {
             await keyTokenSvc.processSusToken(usr_slug, refresh_token, access_token)

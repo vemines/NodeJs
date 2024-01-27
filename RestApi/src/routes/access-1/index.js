@@ -3,7 +3,7 @@
 const express = require('express');
 const accessController = require('../../controllers/access.1.contr');
 const { asyncHandler } = require('../../utils/async.handler.util');
-const { authentication } = require('../../utils/auth.util');
+const { authentication } = require('../../middlewares/auth.midware');
 const router = express.Router();
 
 // signup

@@ -45,7 +45,6 @@ const createToken = async (usr_id, usr_slug, public_key, private_key, refresh_to
 }
 
 const removeRefreshTokens = async (usr_slug) => {
-    console.log(usr_slug);
     const token = await findByUserSlug(usr_slug);
 
     if (!token) {
@@ -89,11 +88,6 @@ const moveToSuspiciousToken = async (usr_slug, refresh_token, access_token) => {
 const findByUserSlug = async (usr_slug) => {
     return await keyTokenModel.findOne({ usr_slug: usr_slug })
 }
-
-const findKeyToken = async () => { }
-const addRefreshTokenUsed = async () => { }
-const updateKeyToken = async () => { }
-
 
 const removeKeyById = async (id) => {
     return await keyTokenModel.deleteOne({ userId: id })

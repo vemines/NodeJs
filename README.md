@@ -4,7 +4,7 @@ npm i express morgan helmet compression mongoose dotenv crypto lodash jsonwebtok
 npm i bcrypt --save
 
 git add .
-git commit -m "update"
+git commit -m "add 4 access user api"
 git push
 
 

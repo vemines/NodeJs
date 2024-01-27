@@ -1,12 +1,18 @@
 'use strict'
 
 const { UnAuthorizedError } = require('../utils/error.response')
+const { findById } = require('../services/api.key.svc')
+const { asyncHandler } = require('../utils/async.handler.util')
+const JWT = require('jsonwebtoken')
+const KeyTokenSvc1 = require('../services/key.token.1.svc')
+const KeyTokenSvc2 = require('../services/key.token.2.svc')
+
 const HEADER = {
     API_KEY: 'x-api-key',
-    AUTHORIZATION: 'athorization'
+    CLIENT_ID: 'x-client-id',
+    ACCESSTOKEN: 'x-access-token',
+    REFRESHTOKEN: 'x-refresh-token',
 }
-
-const { findById } = require('../services/api.key.svc')
 
 const apikey = async (req, res, next) => {
     try {
@@ -47,7 +53,73 @@ const permission = (permission) => {
     }
 }
 
+const authentication = asyncHandler(async (req, res, next) => {
+    // Check userId exist
+    const usr_slug = req.headers[HEADER.CLIENT_ID]
+    if (!usr_slug) throw new UnAuthorizedError('Invalid Request')
+
+    // Get key token in db
+    const keyStore = await KeyTokenSvc1.findKeyByUserSlug(usr_slug)
+    if (!keyStore) throw new NotFoundError('Not found keyStore')
+
+    if (!!req.headers[HEADER.ACCESSTOKEN] && !!req.headers[HEADER.REFRESHTOKEN]) {
+        const access_token = req.headers[HEADER.ACCESSTOKEN]
+        const refresh_token = req.headers[HEADER.REFRESHTOKEN]
+        let decodeUser = JWT.verify(access_token, keyStore.public_key)
+        if (!!decodeUser) {
+            setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug)
+            return next()
+        }
+
+        decodeUser = JWT.verify(refresh_token, keyStore.private_key)
+        if (!!decodeUser) {
+            setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug)
+            return next()
+        }
+    }
+
+    throw new BadRequestError('Bad request')
+})
+
+const authentication2 = asyncHandler(async (req, res, next) => {
+    // Check userId exist
+    const usr_slug = req.headers[HEADER.CLIENT_ID]
+    if (!usr_slug) throw new UnAuthorizedError('Invalid Request')
+
+    // Get key token in db
+    const keyStore = await KeyTokenSvc2.findKeyByUserSlug(usr_slug)
+    if (!keyStore) throw new NotFoundError('Not found keyStore')
+    if (!!req.headers[HEADER.ACCESSTOKEN] && !!req.headers[HEADER.REFRESHTOKEN]) {
+        const access_token = req.headers[HEADER.ACCESSTOKEN]
+        const refresh_token = req.headers[HEADER.REFRESHTOKEN]
+        let decodeUser = JWT.verify(access_token, keyStore.public_key)
+        if (!!decodeUser) {
+            setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug)
+            return next()
+        }
+
+        decodeUser = JWT.verify(refresh_token, keyStore.public_key)
+        if (!!decodeUser) {
+            setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug)
+            return next()
+        }
+    }
+    throw new BadRequestError('Bad request')
+})
+
+function setRequestProperties(req, keyStore, decodeUser, refresh_token, access_token, usr_slug) {
+    if (usr_slug != decodeUser.usr_slug) throw new AuthFailureError('Invalid User')
+    req.keyStore = keyStore
+    req.user = decodeUser
+    req.refresh_token = refresh_token
+    req.access_token = access_token
+}
+
+
+
 module.exports = {
     apikey,
     permission,
+    authentication2,
+    authentication,
 }

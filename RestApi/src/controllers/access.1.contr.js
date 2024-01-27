@@ -5,7 +5,7 @@ const { SuccessResponse, CreatedResponse } = require('../utils/success.response'
 
 const HEADER = {
     CLIENT_ID: 'x-client-id',
-    AUTHORIZATION: 'athorization'
+    ACCESSTOKEN: 'x-access-token',
 }
 
 class AccessController {
@@ -25,7 +25,7 @@ class AccessController {
     static handleSignOut = async (req, res, next) => {
         new SuccessResponse({
             message: 'Logout Success',
-            metadata: await AccessService1.signOut(req.headers[HEADER.CLIENT_ID]),
+            metadata: await AccessService1.signOut(req.user.usr_slug),
         }).send(res)
     }
 

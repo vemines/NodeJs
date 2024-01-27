@@ -1,16 +1,17 @@
 'use strict'
 
-const { Schema, model } = require('mongoose'); // Erase if already required
+const { Schema, model, Types } = require('mongoose'); // Erase if already required
 
 const DOCUMENT_NAME = 'key_token2'
 const COLLECTION_NAME = 'key_tokens2'
 
 // Declare the Schema of the Mongo model
 var keyTokenSchema = new Schema({
-    userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
-    publicKey: { type: String, required: true },
-    refreshToken: { type: String, required: true },
-    refreshTokensUsed: { type: Array, default: [] },
+    usr_id: { type: Types.ObjectId, required: true, ref: 'User' },
+    usr_slug: { type: String, required: true, ref: 'User' },
+    public_key: { type: String, required: true },
+    refresh_token: { type: String, default: "" },
+    refresh_tokens_used: { type: Array, default: [] },
 }, {
     timestamps: true,
     collection: COLLECTION_NAME,

@@ -15,18 +15,15 @@ class AccessService1 {
     static refreshToken = async ({ keyStore, user, refresh_token, access_token }) => {
         const { usr_slug, email, _id } = user
 
-        console.log(`2:::::::::${access_token}`);
 
         // check token isUsed
         if (keyStore.refresh_tokens_used.includes(refresh_token)) {
-            // delete all key and required relogin
             await keyTokenSvc.processSusToken(usr_slug, refresh_token, access_token)
             throw new ForbiddenError(' Something wrng happend !! Pls relogin 1')
         }
 
         // check refresh token isMatch
         if (keyStore.refresh_token != refresh_token) {
-            // delete all key and required relogin
             await keyTokenSvc.processSusToken(usr_slug, refresh_token, access_token)
             throw new ForbiddenError(' Something wrng happend !! Pls relogin 2')
         }
@@ -122,7 +119,7 @@ class AccessService1 {
             return getInfoData({ fields: ["usr_slug", "usr_name", "usr_email", "usr_status"], object: newUser })
         }
 
-        return new InternalServerError('something went wrong')
+        return new InternalServerError('something went wrong code (x8cv97kjker)')
     }
 }
 

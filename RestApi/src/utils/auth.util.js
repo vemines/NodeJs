@@ -14,10 +14,10 @@ const HEADER = {
 
 const createTokenPair = async ({ payload, publicKey, privateKey }) => {
     try {
-        const access_token = await JWT.sign(payload, publicKey, {
+        const access_token = JWT.sign(payload, publicKey, {
             expiresIn: '2 days',
         })
-        const refresh_token = await JWT.sign(payload, privateKey, {
+        const refresh_token = JWT.sign(payload, privateKey, {
             expiresIn: '7 days',
         })
         return { access_token, refresh_token }
@@ -26,32 +26,24 @@ const createTokenPair = async ({ payload, publicKey, privateKey }) => {
     }
 }
 
-const authentication = asyncHandler(async (req, res, next) => {
-    // Check userId exist
-    const usr_slug = req.headers[HEADER.CLIENT_ID]
-    if (!usr_slug) throw new UnAuthorizedError('Invalid Request')
+//  JWT.verify(accessToken, publicKey)
+const createTokenPair2 = async ({ payload, privateKey }) => {
+    try {
+        const access_token = JWT.sign(payload, privateKey, {
+            algorithm: 'RS256',
+            expiresIn: '1 days',
+        })
+        const refresh_token = JWT.sign(payload, privateKey, {
+            algorithm: 'RS256',
+            expiresIn: '7 days',
+        })
 
-    // Get access token in db
-    const keyStore = await KeyTokenSvc.findKeyByUserSlug(usr_slug)
-    if (!keyStore) throw new NotFoundError('Not found keyStore')
+        return { access_token, refresh_token }
 
-    if (req.headers[HEADER.REFRESHTOKEN]) {
-        const access_token = req.headers[HEADER.ACCESSTOKEN]
-        const refresh_token = req.headers[HEADER.REFRESHTOKEN]
-        const decodeUser = JWT.verify(refresh_token, keyStore.private_key)
-
-        // check is userId match decodeUser.userId
-        if (usr_slug != decodeUser.usr_slug) throw new AuthFailureError('Invalid User')
-
-        req.keyStore = keyStore
-        req.user = decodeUser
-        req.refresh_token = refresh_token
-        req.access_token = access_token
-
-        return next()
+    } catch (error) {
+        console.error('error creating token pair:: ', error)
     }
-    throw new BadRequestError('Bad request')
-})
+}
 
 const verifyJWT = async (token, keySecret) => {
     return JWT.verify(token, keySecret)
@@ -59,6 +51,6 @@ const verifyJWT = async (token, keySecret) => {
 
 module.exports = {
     createTokenPair,
-    authentication,
+    createTokenPair2,
     verifyJWT,
 }

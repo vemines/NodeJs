@@ -10,7 +10,11 @@ const apiKeySchema = new Schema({
     usr_id: { type: String, default: "" },
     ip_address: { type: String, required: true },
     status: { type: Boolean, default: true, },
-    permissions: { type: [String], default: ['akp00001'], enum: ['akp00001', 'akp00002', 'akp00003'] },// Api key permissions
+    permissions: {
+        type: [String],
+        default: ['akp00001'],
+        enum: ['akp00001', 'akp00002', 'akp00003', 'akp00004']
+    },// Api key permissions
 }, {
     timestamps: true,
     collection: COLLECTION_NAME

@@ -1,24 +1,21 @@
 'use strict'
 
 const express = require('express');
-const accessController = require('../../controllers/access.2.contr');
+const AccessController = require('../../controllers/access.2.contr');
 const { asyncHandler } = require('../../utils/async.handler.util');
 const { authentication2 } = require('../../middlewares/auth.midware');
 const router = express.Router();
 
 // signup
-router.post('/signup', asyncHandler(accessController.handleSignUp))
+router.post('/signup', asyncHandler(AccessController.handleSignUp))
 
 // signin
-router.post('/signin', asyncHandler(accessController.handleSignIn))
-
-// middleware check auth
-router.use(authentication2)
+router.post('/signin', asyncHandler(AccessController.handleSignIn))
 
 // signout
-router.post('/signout', asyncHandler(accessController.handleSignOut))
+router.post('/signout', authentication2, asyncHandler(AccessController.handleSignOut))
 
 // refresh token
-router.post('/refresh-token', asyncHandler(accessController.handleRefreshToken))
+router.post('/refresh-token', authentication2, asyncHandler(AccessController.handleRefreshToken))
 
 module.exports = router;

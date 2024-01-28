@@ -3,7 +3,7 @@
 const JWT = require('jsonwebtoken')
 const { asyncHandler } = require('./async.handler.util')
 const { AuthFailureError, NotFoundError, UnAuthorizedError, BadRequestError } = require('../utils/error.response')
-const KeyTokenSvc = require('../services/key.token.1.svc')
+const KeyTokenService = require('../services/key.token.1.svc')
 
 const HEADER = {
     API_KEY: 'x-api-key',
@@ -45,7 +45,7 @@ const createTokenPair2 = async ({ payload, privateKey }) => {
     }
 }
 
-const verifyJWT = async (token, keySecret) => {
+const verifyJWT = (token, keySecret) => {
     return JWT.verify(token, keySecret)
 }
 

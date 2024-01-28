@@ -1,4 +1,0 @@
-access-1 for small app
-access-2 for large system using rsa -> long time check token
-
-this project use access-1

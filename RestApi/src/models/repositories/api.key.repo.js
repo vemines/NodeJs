@@ -25,6 +25,10 @@ const addPermission = async (key, permissions) => {
     // check is permission exist
     const holderKey = await apiKeyModel.findOne({ key })
 
+    if (!holderKey) {
+        throw new BadRequestError('Key not found')
+    }
+
     forEach(permissions, (permission) => {
         if (holderKey.permissions.includes(permission)) {
             throw new BadRequestError('Permission already exists')

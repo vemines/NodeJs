@@ -7,8 +7,8 @@ const COLLECTION_NAME = 'electronics'
 const electronicSchema = new Schema({
     manufactor: { type: String, require: true },
     model: String,
-    color: String,
-    product_shop: { type: Types.ObjectId, require: true, ref: 'shop' },
+    shop_slug: { String, require: true },
+    shop_id: { type: Schema.Types.ObjectId, ref: 'Shop' },
 }, {
     timestamps: true,
     collection: COLLECTION_NAME

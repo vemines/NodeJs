@@ -3,19 +3,19 @@
 const { createApiKey, findApiKey, addPermission, removePermission } = require('../models/repositories/api.key.repo');
 
 class ApiKeyService {
-    static handleCreateApiKey = async (ip_address) => {
+    static createNewApiKey = async (ip_address) => {
         return createApiKey(ip_address);
     };
 
-    static handleFindApiKey = async (key) => {
+    static findApiKeyByKey = async (key) => {
         return await findApiKey(key);
     };
 
-    static handleAddPermission = async ({ key, permissions }) => {
+    static addPermissionToKey = async ({ key, permissions }) => {
         return await addPermission(key, permissions);
     };
 
-    static handleRemovePermission = async ({ key, permissions }) => {
+    static removePermissionFromKey = async ({ key, permissions }) => {
         return await removePermission(key, permissions);
     };
 };

@@ -15,7 +15,7 @@ class AccessController {
             message: 'Refresh token Success',
             metadata: await AccessService2.refreshToken({
                 refresh_token: req.refresh_token,
-                user: req.user,
+                payload: req.payload,
                 keyStore: req.keyStore, // key token
                 access_token: req.access_token
             }),
@@ -25,7 +25,7 @@ class AccessController {
     static handleSignOut = async (req, res, next) => {
         new SuccessResponse({
             message: 'Logout Success',
-            metadata: await AccessService2.signOut(req.user.usr_slug),
+            metadata: await AccessService2.signOut(req.payload.usr_slug),
         }).send(res)
     }
 

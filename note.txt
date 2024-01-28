@@ -1,0 +1,23 @@
+access-1 for small app
+access-2 for large system using rsa -> long time check token
+
+this project use access-1
+
+//// Instance in class with static,this ////
+class Car {
+    constructor(model, year) {
+        this.model = model;
+        this.year = year;
+    }
+
+    startEngine() {
+        const wheels = Car.numberOfWheels();    // the static function only call by Class. , and can't access this.model.
+        return `${this.model} engine started. This car has ${wheels} wheels.`;
+    }
+
+    static numberOfWheels() {
+        return 4;
+    }
+}
+const myCar = new Car('Toyota', 2020);
+console.log(myCar.numberOfWheels()); // Throws an error because numberOfWheels is not a method of the instance

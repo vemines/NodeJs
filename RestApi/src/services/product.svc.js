@@ -47,12 +47,12 @@ class ProductService {
     }
 
     static async getAllDraftsByShop({ prod_shop, limit = 50, skip = 0 }) {
-        const query = { prod_shop, isDraft: true }
+        const query = { prod_shop, prod_is_draft: true }
         return await findAllDrafts(query, limit, skip)
     }
 
     static async getAllPublishByShop({ prod_shop, limit = 50, skip = 0 }) {
-        const query = { prod_shop, isPublished: true }
+        const query = { prod_shop, prod_is_published: true }
         return await findAllPublish(query, limit, skip)
     }
 
@@ -62,7 +62,7 @@ class ProductService {
 
     static async findAllProductsByUser({
         limit = 50, sort = 'ctime', page = 1,
-        filter = { isPublished: true },
+        filter = { prod_is_published: true },
         select = ['prod_name', 'prod_price', 'prod_thumb', 'prod_shop', 'prod_slug']
     }) {
         return await findAllProducts(limit, sort, page, filter, select)

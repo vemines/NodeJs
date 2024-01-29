@@ -6,7 +6,7 @@ const { SuccessResponse, CreatedResponse } = require('../utils/success.response'
 const slugify = require('slugify');
 
 class ProductController {
-    handleCreateProductByShop = async (req, res, next) => {
+    static handleCreateProductByShop = async (req, res, next) => {
         new CreatedResponse({
             message: 'Create new Product Success',
             metadata: await ProductService.createProductByShop(
@@ -19,7 +19,7 @@ class ProductController {
         }).send(res)
     }
 
-    handleUpdateProductByShop = async (req, res, next) => {
+    static handleUpdateProductByShop = async (req, res, next) => {
 
         new SuccessResponse({
             message: 'Update Product Success',
@@ -31,7 +31,7 @@ class ProductController {
         }).send(res)
     }
 
-    handlePublishProductByShop = async (req, res, next) => {
+    static handlePublishProductByShop = async (req, res, next) => {
         new SuccessResponse({
             message: 'Published Product Success',
             metadata: await ProductService.publishProductByShop({
@@ -41,7 +41,7 @@ class ProductController {
         }).send(res)
     }
 
-    handleUnPublishProductByShop = async (req, res, next) => {
+    static handleUnPublishProductByShop = async (req, res, next) => {
         new SuccessResponse({
             message: 'UnPublished Product Success',
             metadata: await ProductService.unPublishProductByShop({
@@ -51,9 +51,7 @@ class ProductController {
         }).send(res)
     }
 
-
-
-    handleGetAllDraftsByShop = async (req, res, next) =>
+    static handleGetAllDraftsByShop = async (req, res, next) =>
         new SuccessResponse({
             message: 'Get list Draft success!',
             metadata: await ProductService.getAllDraftsByShop({
@@ -61,7 +59,7 @@ class ProductController {
             })
         }).send(res)
 
-    handleGetAllPublishByShop = async (req, res, next) =>
+    static handleGetAllPublishByShop = async (req, res, next) =>
         new SuccessResponse({
             message: 'Get list Publish success!',
             metadata: await ProductService.getAllPublishByShop({
@@ -69,24 +67,24 @@ class ProductController {
             })
         }).send(res)
 
-    handleSearchProdctByUser = async (req, res, next) => {
+    static handleSearchProdctByUser = async (req, res, next) => {
         new SuccessResponse({
             message: 'Search Product Result',
             metadata: await ProductService.searchProductByUser(slugify(req.params.keySearch, { lower: true })),
         }).send(res)
     }
 
-    handleFindAllProductsByUser = async (req, res, next) =>
+    static handleFindAllProductsByUser = async (req, res, next) =>
         new SuccessResponse({
             message: 'Get all Products success!',
             metadata: await ProductService.findAllProductsByUser({})
         }).send(res)
 
-    handleProductDetailByUser = async (req, res, next) =>
+    static handleProductDetailByUser = async (req, res, next) =>
         new SuccessResponse({
             message: 'Get Product success!',
             metadata: await ProductService.productDetailByUser({ prod_id: req.params.productId })
         }).send(res)
 }
 
-module.exports = new ProductController()
+module.exports = ProductController

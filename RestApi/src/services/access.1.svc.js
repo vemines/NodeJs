@@ -7,16 +7,16 @@ const { getInfoData, randomString, updateNestedObjectParser } = require('../util
 const { BadRequestError, ForbiddenError, UnAuthorizedError, InternalServerError } = require('../utils/error.response')
 
 const { createTokenPair } = require('../utils/auth.util')
-const userService = require('./user.svc')     // const userModel = require('../models/user.model')
-const keyTokenService = require('./key.token.1.svc')
+const UserService = require('./user.svc')     // const userModel = require('../models/user.model')
+const KeyTokenService = require('./key.token.1.svc')
 
 class AccessService1 {
     static createShopByUser = async (payload) => {
-        return await userService.createShopByUser(payload)
+        return await UserService.createShopByUser(payload)
     }
 
     static updateUserInfo = async (_id, body) => {
-        return await userService.updateUserInfo(_id, updateNestedObjectParser(body))
+        return await UserService.updateUserInfo(_id, updateNestedObjectParser(body))
     }
 
     static refreshToken = async ({ keyStore, payload, refresh_token, access_token }) => {
@@ -24,18 +24,18 @@ class AccessService1 {
 
         // check token isUsed
         if (keyStore.refresh_tokens_used.includes(refresh_token)) {
-            await keyTokenService.processSusToken(usr_slug, refresh_token, access_token)
+            await KeyTokenService.processSusToken(usr_slug, refresh_token, access_token)
             throw new ForbiddenError(' Something wrng happend !! Pls relogin 1')
         }
 
         // check refresh token isMatch
         if (keyStore.refresh_token != refresh_token) {
-            await keyTokenService.processSusToken(usr_slug, refresh_token, access_token)
+            await KeyTokenService.processSusToken(usr_slug, refresh_token, access_token)
             throw new ForbiddenError(' Something wrng happend !! Pls relogin 2')
         }
 
         // check Userid
-        const foundUser = await userService.findUserByEmail(email)
+        const foundUser = await UserService.findUserByEmail(email)
         if (!foundUser) throw new UnAuthorizedError(' User not registeted')
 
         // create new token
@@ -61,12 +61,12 @@ class AccessService1 {
     }
 
     static signOut = async (usr_slug) => {
-        return await keyTokenService.clearRefreshToken(usr_slug)
+        return await KeyTokenService.clearRefreshToken(usr_slug)
     }
 
     static signIn = async ({ email, password }) => {
         // check email exist in db
-        const foundUser = await userService.findUserByEmail(email)
+        const foundUser = await UserService.findUserByEmail(email)
         if (!foundUser) throw new BadRequestError('User not registered')
 
         const { _id, usr_slug, usr_salt, usr_password } = foundUser
@@ -85,7 +85,7 @@ class AccessService1 {
             privateKey: privateKey,
         })
 
-        await keyTokenService.createKeyToken({
+        await KeyTokenService.createKeyToken({
             usr_id: _id,
             usr_slug: usr_slug,
             refresh_token: tokens.refresh_token,
@@ -101,7 +101,7 @@ class AccessService1 {
 
     static signUp = async ({ name, email, password }) => {
         // check email exists
-        const holderUser = await userService.findUserByEmail(email)
+        const holderUser = await UserService.findUserByEmail(email)
         if (holderUser) {
             throw new BadRequestError('Error: User already exist')
         }
@@ -112,7 +112,7 @@ class AccessService1 {
 
         const userSlug = randomString()
         // create new user
-        const newUser = await userService.createUser({
+        const newUser = await UserService.createUser({
             usr_name: name,
             usr_slug: userSlug,
             usr_salt: salt,

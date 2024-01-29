@@ -24,8 +24,8 @@ const productSchema = new Schema({
         set: (val) => Math.round(val * 10) / 10
     },
     // prod_variations: { type: Array, default: [] },
-    isDraft: { type: Boolean, default: true, index: true, select: false },
-    isPublished: { type: Boolean, default: false, index: true, select: false }
+    prod_is_draft: { type: Boolean, default: true, index: true, select: false },
+    prod_is_published: { type: Boolean, default: false, index: true, select: false }
 }, {
     collection: COLLECTION_NAME,
     timestamps: true,

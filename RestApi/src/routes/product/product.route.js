@@ -1,9 +1,11 @@
 'use strict'
 
 const express = require('express');
+const router = express.Router();
+
 const ProductController = require('../../controllers/product.contr');
 const { asyncHandler } = require('../../utils/async.handler.util');
-const router = express.Router();
+
 
 router.post('/search/:keySearch', asyncHandler(ProductController.handleSearchProdctByUser))
 router.get('/list', asyncHandler(ProductController.handleFindAllProductsByUser))

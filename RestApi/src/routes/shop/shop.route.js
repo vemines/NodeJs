@@ -1,10 +1,12 @@
 'use strict'
 
 const express = require('express');
+const router = express.Router();
+
 const ProductController = require('../../controllers/product.contr');
 const { asyncHandler } = require('../../utils/async.handler.util');
 const { authenticationUser, authenticationShop } = require('../../middlewares/auth.midware');
-const router = express.Router();
+
 
 router.post('/create-product',
     authenticationUser,

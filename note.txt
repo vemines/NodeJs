@@ -21,3 +21,10 @@ class Car {
 }
 const myCar = new Car('Toyota', 2020);
 console.log(myCar.numberOfWheels()); // Throws an error because numberOfWheels is not a method of the instance
+
+openssl genrsa -out private_key.pem 2048
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+
+//// mongoose ////
+// $elemMatch query element matches a specified condition in array
+cart_products: { $elemMatch: { prod_id: prod_id } }

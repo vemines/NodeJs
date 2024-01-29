@@ -23,42 +23,11 @@ const findAllDrafts = async (query, limit, skip) => {
 const findAllPublish = async (query, limit, skip) => {
     return await queryProduct(query, limit, skip)
 }
-/*
-    expected search data with keysearch is
-    {
-        "_id": "65b6883ab78946c32ef6f6fb",
-        "prod_name": "Quần Tây Nam Hàn Quốc KJ Ống Côn Cao Cấp Chất Vải Co Giãn Dày Dặn Form Slimfit Hàn Quốc KJ-Vua Quần Jeans",
-        "prod_thumb": "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lo1b08e8vmct74",
-        "prod_price": 169000,
-        "prod_quantity": 5,
-        "prod_type": "Clothing",
-        "prod_shop": {},
-        "prod_attributes": {
-            "brand": "KJ Vua Quần Jeans",
-            "size": [
-                "20",
-                "24",
-                "28"
-            ],
-            "material": "Cotton, Sợi tổng hợp",
-            "made_in": "Việt Nam",
-            "variations": [
-                "Đen",
-                "Xanh than"
-            ]
-        },
-        "prod_ratings": [],
-        "prod_ratingsAverage": 0,
-        "createdAt": "2024-01-28T17:00:42.709Z",
-        "updatedAt": "2024-01-28T17:01:43.083Z",
-        "prod_slug": "quan-tay-nam-han-quoc-kj-ong-con-cao-cap-chat-vai-co-gian-day-dan-form-slimfit-han-quoc-kj-vua-quan-jeans",
-        "__v": 0
-}
-*/
+
 const searchProduct = async (keySearch) => {
     const regexSearch = new RegExp(keySearch)
     const results = await productModel.find({
-        isPublished: true,
+        prod_is_published: true,
         $text: { $search: regexSearch }
     }, { score: { $meta: 'textScore' } })
         .sort({ score: { $meta: 'textScore' } })
@@ -72,8 +41,8 @@ const publishProduct = async (prod_shop, prod_id) => {
     })
     if (!holderProduct) throw new NotFoundError("Product not found")
 
-    holderProduct.isDraft = false
-    holderProduct.isPublished = true
+    holderProduct.prod_is_draft = false
+    holderProduct.prod_is_published = true
     const { modifiedCount } = await holderProduct.updateOne(holderProduct)
     return modifiedCount
 }
@@ -84,8 +53,8 @@ const unPublishProduct = async (prod_shop, prod_id) => {
     })
     if (!holderProduct) throw new NotFoundError("Product not found")
 
-    holderProduct.isDraft = true
-    holderProduct.isPublished = false
+    holderProduct.prod_is_draft = true
+    holderProduct.prod_is_published = false
     const { modifiedCount } = await holderProduct.updateOne(holderProduct)
     return modifiedCount
 }
@@ -103,9 +72,8 @@ const findAllProducts = async (limit, sort, page, filter, select) => {
     return products
 }
 
-const findProduct = async ({ prod_id, unSelect }) => {
-    const product = await productModel
-        .findById(prod_id)
+const findProduct = async ({ prod_id, unSelect = {} }) => {
+    const product = await productModel.findById(prod_id)
         .select(getUnSelectData(unSelect))
 
     if (!product) throw new BadRequestError('Not found Product')
@@ -113,6 +81,9 @@ const findProduct = async ({ prod_id, unSelect }) => {
     return product
 }
 
+const findProductByUser = async ({ prod_id }) => {
+    return await productModel.findOne({ _id: toObjectIdMongo(prod_id), prod_is_published: true })
+}
 
 const updateProductById = async ({
     prod_id,
@@ -136,13 +107,7 @@ const checkProductByServer = async (products) => {
     }))
 }
 
-const getProductById = async ({ prod_id, select = [] }) => {
-    return await productModel.findOne({
-        _id: toObjectIdMongo(prod_id)
-    })
-        .select(getSelectData({ select: select }))
-        .lean()
-}
+
 
 module.exports = {
     findAllDrafts,
@@ -154,5 +119,5 @@ module.exports = {
     findProduct,
     updateProductById,
     checkProductByServer,
-    getProductById,
+    findProductByUser
 }

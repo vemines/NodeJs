@@ -39,6 +39,7 @@ const addPermission = async (key, permissions) => {
         { key, status: true },
         { $addToSet: { permissions: permissions } },
         { upsert: true, new: true })
+
     return apiKey
 }
 const removePermission = async (key, permissions) => {

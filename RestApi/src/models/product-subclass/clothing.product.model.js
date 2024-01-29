@@ -11,7 +11,7 @@ const clothingSchema = new Schema({
     material: String,
     variations: { type: Array, default: [] },
     make_in: String,
-    prod_shop: { type: Schema.Types.ObjectId, require: true, ref: 'shop' }, // for seach cloth product type of shop
+    prod_shop: { type: Schema.Types.ObjectId, require: true, ref: 'shop' }, // for search clothing product type of shop
 }, {
     timestamps: true,
     collection: COLLECTION_NAME

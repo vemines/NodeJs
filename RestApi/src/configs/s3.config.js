@@ -8,7 +8,7 @@ const credentials = {
 }
 
 const s3Config = {
-    region: 'ap-southeast-1',
+    region: process.env.AWS_S3_REGION,
     credentials,
 }
 
@@ -18,7 +18,7 @@ const s3 = new S3Client(s3Config)
 //     const params = {
 //         Bucket: process.env.AWS_S3_BUCKET_NAME,
 //         // file name already upload,
-//         Key: 'sample.jpeg',
+//         Key: 'sample.jpeg',                      // file name already upload on s3
 //     }
 
 //     const cmd = new GetObjectCommand(params)

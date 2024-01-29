@@ -1,4 +1,4 @@
 /node_modules
-/RestApi/.env
+/.env
 /course
-/temp
+/keys

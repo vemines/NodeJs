@@ -6,7 +6,7 @@ npm i @aws-sdk/cloudfront-signer --save
 payload: { usr_slug, email, _id }
 
 git add .
-git commit -m "add api upload image cloudinary, s3 cloudfront"
+git commit -m "add api cart"
 git push
 
 

@@ -2,11 +2,25 @@
 
 const { toObjectIdMongo } = require('../../utils')
 const { ForbiddenError, UnAuthorizedError, InternalServerError } = require('../../utils/error.response')
-const keyTokenModel = require('../key.token.2.model')
+const model = require('../key.token.2.model')
 const suspiciousTokenModel = require('../suspicious.token.model')
 
+class KeyToken2Repository {
+
+    static updateOne = async ({ filter, update, options }) => {
+        return await model.updateOne(filter, update, options)
+    }
+
+    static findOne = async ({ filter, projection, options }) => {
+        return await model.findOne(filter, projection, options)
+    }
+    static create = async ({ payload }) => {
+        return await model.create(payload)
+    }
+}
+
 const newToken = async (usr_id, usr_slug, public_key, refresh_token) => {
-    const doc = await keyTokenModel.create({
+    const doc = await model.create({
         usr_id: toObjectIdMongo(usr_id),
         usr_slug: usr_slug,
         refresh_token: refresh_token,
@@ -20,11 +34,11 @@ const createToken = async (usr_id, usr_slug, public_key, refresh_token) => {
     const token = await findByUserSlug(usr_slug);
 
     if (!token) {
-        // Create a new token if it doesn't exist
+        //  Create a new token if it doesn't exist
         return newToken(usr_id, usr_slug, public_key, refresh_token);
     }
 
-    // check token exist and token.refresh_tokens_used contain refresh_token
+    //  check token exist and token.refresh_tokens_used contain refresh_token
     if (token && token.refresh_tokens_used.includes(refresh_token)) {
         throw new ForbiddenError('something went wrong code(zxc8x7c89zc)')
     }
@@ -72,7 +86,7 @@ const moveToSuspiciousToken = async (usr_slug, refresh_token, access_token) => {
             public_key: tokenData.public_key,
             refresh_token: tokenData.refresh_token,
         })
-        await keyTokenModel.updateOne(
+        await model.updateOne(
             { usr_slug: usr_slug },
             { $pull: { refresh_tokens_used: refresh_token } }
         );
@@ -86,28 +100,32 @@ const moveToSuspiciousToken = async (usr_slug, refresh_token, access_token) => {
 
 
 const findByUserSlug = async (usr_slug) => {
-    return await keyTokenModel.findOne({ usr_slug: usr_slug })
+    return await model.findOne({ usr_slug: usr_slug })
 }
 
 const removeKeyById = async (id) => {
-    return await keyTokenModel.deleteOne({ userId: id })
+    return await model.deleteOne({ userId: id })
 }
 
 const findExistRefreshTokenUsed = async (refreshToken) => {
-    return await keyTokenModel.findOne({ refreshTokensUsed: refreshToken }).lean()
+    return await model.findOne({ refreshTokensUsed: refreshToken }).lean()
 }
 
 const findRefreshToken = async (refreshToken) => {
-    return await keyTokenModel.findOne({ refreshToken: refreshToken })
+    return await model.findOne({ refreshToken: refreshToken })
 }
 
 const deleteKeyByUserId = async (userId) => {
-    return await keyTokenModel.findOneAndDelete({ userId: userId })
+    return await model.findOneAndDelete({ userId: userId })
 }
 
 module.exports = {
+    KeyToken2Repository,
     createToken,
     findByUserSlug,
-    removeRefreshTokens,
+    removeKeyById,
+    findExistRefreshTokenUsed,
+    findRefreshToken,
+    deleteKeyByUserId,
     moveToSuspiciousToken
 }

@@ -1,9 +1,6 @@
 'use strict'
 
 const JWT = require('jsonwebtoken')
-const { asyncHandler } = require('./async.handler.util')
-const { AuthFailureError, NotFoundError, UnAuthorizedError, BadRequestError } = require('../utils/error.response')
-const KeyTokenService = require('../services/key.token.1.svc')
 
 const HEADER = {
     API_KEY: 'x-api-key',

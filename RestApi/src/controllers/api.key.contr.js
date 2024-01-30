@@ -7,21 +7,29 @@ class ApiKeyController {
     static handleCreateNewApiKey = async (req, res, next) => {
         new CreatedResponse({
             message: 'Create Api key Success',
-            metadata: await ApiKeyService.createNewApiKey(req.ip),
+            metadata: await ApiKeyService.createNewApiKey({
+                ip_address: req.ip
+            })
         }).send(res)
     }
 
     static handleAddPermissionApiKey = async (req, res, next) => {
         new SuccessResponse({
             message: 'Add Permission Success',
-            metadata: await ApiKeyService.addPermissionToKey(req.body),
+            metadata: await ApiKeyService.addPermissionToKey({
+                key: req.body.key,
+                permissions: req.body.permissions
+            })
         }).send(res)
     }
 
     static handleRemovePermissionApiKey = async (req, res, next) => {
         new SuccessResponse({
             message: 'Remove Permission Success',
-            metadata: await ApiKeyService.removePermissionFromKey(req.body),
+            metadata: await ApiKeyService.removePermissionFromKey({
+                key: req.body.key,
+                permissions: req.body.permissions
+            })
         }).send(res)
     }
 }

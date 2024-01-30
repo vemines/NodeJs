@@ -9,7 +9,7 @@ class RedisSubcribeTest {
         })
     }
     static test(productId, quantity) {
-        console.log(`[0001]: Updated inventory for Product ID ${productId}: Quantity ${quantity}`);
+        console.log(`[0001]: update inventory for Product ID ${productId}: Quantity ${quantity}`);
     }
 }
 

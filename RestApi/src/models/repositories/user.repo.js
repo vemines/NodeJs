@@ -1,16 +1,32 @@
 'use strict'
 
-const userModel = require('../user.model')
+const model = require('../user.model')
 const shopModel = require('../shop.model')
 const { NotFoundError, InternalServerError, BadRequestError } = require('../../utils/error.response')
 const { toObjectIdMongo, randomString } = require('../../utils')
 
+class UserRepository {
+    static findOne = async ({ filter, projection, options }) => {
+        return await model.findOne(filter, projection, options)
+    }
+    static findById = async ({ usr_id, projection, options }) => {
+        return await model.findById(usr_id, projection, options)
+    }
+    static create = async ({ payload }) => {
+        return await model.create(payload)
+    }
+
+    static findByIdAndUpdate = async ({ usr_id, update, options }) => {
+        return await model.findByIdAndUpdate(usr_id, update, options)
+    }
+}
+
 const findByEmail = async (email) => {
-    return await userModel.findOne({ usr_email: email }).lean()
+    return await model.findOne({ usr_email: email }).lean()
 }
 
 const findById = async (_id) => {
-    return await userModel.findById(_id)  // Use for get and update later so can't use lean()
+    return await model.findById(_id)
 }
 
 const createShop = async (payload) => {
@@ -18,7 +34,7 @@ const createShop = async (payload) => {
     if (!currentUser) {
         throw new NotFoundError('User not found')
     }
-    // check user avatar, phone 
+    //  check user avatar, phone
     if (!currentUser.usr_avatar || !currentUser.usr_phone || !currentUser.usr_address || !currentUser.usr_address_city) {
         throw new BadRequestError('User information is invalid, please add avatar, phone and address')
     }
@@ -43,7 +59,7 @@ const createShop = async (payload) => {
     }
 
 
-    await userModel.findByIdAndUpdate(
+    await model.findByIdAndUpdate(
         { _id: payload._id, },
         {
             usr_is_seller: true,
@@ -56,7 +72,7 @@ const createShop = async (payload) => {
 }
 
 const createUser = async (usr_name, usr_slug, usr_salt, usr_email, usr_password) => {
-    return await userModel.create({
+    return await model.create({
         usr_name: usr_name,
         usr_slug: usr_slug,
         usr_salt: usr_salt,
@@ -66,12 +82,11 @@ const createUser = async (usr_name, usr_slug, usr_salt, usr_email, usr_password)
 }
 
 const updateUser = async (_id, bodyUpdate) => {
-    return await userModel.findByIdAndUpdate(_id, bodyUpdate, { new: true })
+    return await model.findByIdAndUpdate(_id, bodyUpdate, { new: true })
 }
-const disableUser = async (id) => { }
-const changePassword = async (id, password) => { }
 
 module.exports = {
+    UserRepository,
     createUser,
     findByEmail,
     findById,

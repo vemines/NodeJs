@@ -18,27 +18,36 @@ class AccessController {
                 payload: req.payload,
                 keyStore: req.keyStore, // key token
                 access_token: req.access_token
-            }),
+            })
         }).send(res)
     }
 
     static handleSignOut = async (req, res, next) => {
         new SuccessResponse({
             message: 'Logout Success',
-            metadata: await AccessService2.signOut(req.payload.usr_slug),
+            metadata: await AccessService2.signOut({
+                usr_slug: req.payload.usr_slug
+            })
         }).send(res)
     }
 
     static handleSignIn = async (req, res, next) => {
         new SuccessResponse({
-            metadata: await AccessService2.signIn(req.body),
+            metadata: await AccessService2.signIn({
+                email: req.body.email,
+                password: req.body.password,
+            })
         }).send(res)
     }
 
     static handleSignUp = async (req, res, next) => {
         new CreatedResponse({
             message: 'Register Success',
-            metadata: await AccessService2.signUp(req.body),
+            metadata: await AccessService2.signUp({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password,
+            })
         }).send(res)
     }
 }

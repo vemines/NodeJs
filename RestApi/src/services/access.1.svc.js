@@ -1,5 +1,4 @@
-'use strict'
-
+'use  strict'
 const bcrypt = require('bcrypt')
 const crypto = require('node:crypto')
 
@@ -7,16 +6,13 @@ const { getInfoData, randomString, updateNestedObjectParser } = require('../util
 const { BadRequestError, ForbiddenError, UnAuthorizedError, InternalServerError } = require('../utils/error.response')
 
 const { createTokenPair } = require('../utils/auth.util')
-const UserService = require('./user.svc')     // const userModel = require('../models/user.model')
+const UserService = require('./user.svc')
 const KeyTokenService = require('./key.token.1.svc')
 
 class AccessService1 {
-    static createShopByUser = async (payload) => {
-        return await UserService.createShopByUser(payload)
-    }
-
-    static updateUserInfo = async (_id, body) => {
-        return await UserService.updateUserInfo(_id, updateNestedObjectParser(body))
+    static createShopByUser = async ({ usr_id }) => {
+        const newShop = await UserService.createShopByUser({ usr_id })
+        return newShop
     }
 
     static refreshToken = async ({ keyStore, payload, refresh_token, access_token }) => {
@@ -24,19 +20,19 @@ class AccessService1 {
 
         // check token isUsed
         if (keyStore.refresh_tokens_used.includes(refresh_token)) {
-            await KeyTokenService.processSusToken(usr_slug, refresh_token, access_token)
+            await KeyTokenService.processSusToken({ usr_slug, refresh_token, access_token })
             throw new ForbiddenError(' Something wrng happend !! Pls relogin 1')
         }
 
         // check refresh token isMatch
         if (keyStore.refresh_token != refresh_token) {
-            await KeyTokenService.processSusToken(usr_slug, refresh_token, access_token)
+            await KeyTokenService.processSusToken({ usr_slug, refresh_token, access_token })
             throw new ForbiddenError(' Something wrng happend !! Pls relogin 2')
         }
 
-        // check Userid
-        const foundUser = await UserService.findUserByEmail(email)
-        if (!foundUser) throw new UnAuthorizedError(' User not registeted')
+        // check user exist
+        const foundUser = await UserService.findUserByEmail({ email })
+        if (!foundUser) throw new UnAuthorizedError('User not registeted')
 
         // create new token
         const tokens = await createTokenPair({
@@ -47,26 +43,27 @@ class AccessService1 {
 
         // update token
         await keyStore.updateOne({
-            $set: {
-                refresh_token: tokens.refresh_token
-            },
-            $addToSet: {
-                refreshTokensUsed: refresh_token
-            }
+            $set: { refresh_token: tokens.refresh_token },
+            $addToSet: { refreshTokensUsed: refresh_token }
         })
+
         return {
-            user: getInfoData({ fields: ["usr_slug", "usr_name", "usr_email", "usr_status"], object: foundUser }),
+            user: getInfoData({
+                fields: ["usr_slug", "usr_name", "usr_email", "usr_status"],
+                object: foundUser
+            }),
             tokens
         }
     }
 
-    static signOut = async (usr_slug) => {
-        return await KeyTokenService.clearRefreshToken(usr_slug)
+    static signOut = async ({ usr_slug }) => {
+        const result = await KeyTokenService.clearRefreshToken({ usr_slug })
+        return result
     }
 
     static signIn = async ({ email, password }) => {
         // check email exist in db
-        const foundUser = await UserService.findUserByEmail(email)
+        const foundUser = await UserService.findUserByEmail({ email })
         if (!foundUser) throw new BadRequestError('User not registered')
 
         const { _id, usr_slug, usr_salt, usr_password } = foundUser
@@ -94,14 +91,17 @@ class AccessService1 {
         })
 
         return {
-            user: getInfoData({ fields: ["usr_slug", "usr_name", "usr_email", "usr_status"], object: foundUser }),
+            user: getInfoData({
+                fields: ["usr_slug", "usr_name", "usr_email", "usr_status"],
+                object: foundUser
+            }),
             tokens: tokens
         }
     }
 
     static signUp = async ({ name, email, password }) => {
         // check email exists
-        const holderUser = await UserService.findUserByEmail(email)
+        const holderUser = await UserService.findUserByEmail({ email })
         if (holderUser) {
             throw new BadRequestError('Error: User already exist')
         }
@@ -122,10 +122,12 @@ class AccessService1 {
 
         // if create user succeed
         if (newUser) {
-            return getInfoData({ fields: ["usr_slug", "usr_name", "usr_email", "usr_status"], object: newUser })
+            return getInfoData({
+                fields: ["usr_slug", "usr_name", "usr_email", "usr_status"],
+                object: newUser
+            })
         }
-
-        return new InternalServerError('something went wrong code (x8cv97kjker)')
+        return new InternalServerError('Create user error')
     }
 }
 

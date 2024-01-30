@@ -1,17 +1,36 @@
 'use strict'
 
-const productModel = require('../product.model')
+const model = require('../product.model')
 const { Types } = require('mongoose')
 const { BadRequestError, NotFoundError } = require('../../utils/error.response')
 const { getSelectData, getUnSelectData } = require('../../utils')
 const { toObjectIdMongo } = require('../../utils')
 
+class ProductRepository {
+    static find = async ({ filter, projection, options }) => {
+        return await model.find(filter, projection, options)
+    }
+
+    static findByIdAndUpdate = async ({ prod_id, update, options }) => {
+        return await model.findByIdAndUpdate(prod_id, update, options)
+    }
+    static findById = async ({ prod_id, projection, options }) => {
+        return await model.findById(prod_id, projection, options)
+    }
+
+    static findOneAndUpdate = async ({ filter, update, options }) => {
+        return await model.findOneAndUpdate(filter, update, options)
+    }
+
+    static create = async ({ payload }) => {
+        return await model.create(payload)
+    }
+}
+
 const queryProduct = async (query, limit, skip) => {
-    return await productModel.find(query).
-        populate('prod_shop', 'name email -_id') // get name and email and remove _id
-        .sort({ updateAt: -1 })                     // take newest
-        .skip(skip)
-        .limit(limit)
+    return await productModel.find(query)
+        .populate('prod_shop', 'name email -_id')  // get name and email and remove _id
+        .sort({ score: { $meta: 'textScore' } })  // take newest
         .lean()
         .exec()
 }
@@ -29,7 +48,7 @@ const searchProduct = async (keySearch) => {
     const results = await productModel.find({
         prod_is_published: true,
         $text: { $search: regexSearch }
-    }, { score: { $meta: 'textScore' } })
+    }, { score: { $meta: 'textScore' } })    // score is special feature of $text search
         .sort({ score: { $meta: 'textScore' } })
         .lean()
     return results;
@@ -107,17 +126,17 @@ const checkProductByServer = async (products) => {
     }))
 }
 
-
-
 module.exports = {
+    ProductRepository,
+    queryProduct,
     findAllDrafts,
-    publishProduct,
     findAllPublish,
-    unPublishProduct,
     searchProduct,
+    publishProduct,
+    unPublishProduct,
     findAllProducts,
     findProduct,
+    findProductByUser,
     updateProductById,
-    checkProductByServer,
-    findProductByUser
+    checkProductByServer
 }

@@ -1,17 +1,21 @@
 'use strict'
 
 const cartModel = require('../models/cart.model');
+const { CartRepository } = require('../models/repositories/cart.repo');
+const { ProductRepository } = require('../models/repositories/product.repo');
 
-const { findProductByUser } = require('../models/repositories/product.repo')
+const { findProductByUser, ProductRepository } = require('../models/repositories/product.repo');
+const { toObjectIdMongo } = require('../utils');
 const { NotFoundError, BadRequestError } = require('../utils/error.response')
 
 
 class CartService {
     // "product": {"prod_id" ,"shop_id": ,"quantity": }
     static async addToCart({ usr_id, product }) {
-        const foundProduct = await findProductByUser({ prod_id: product.prod_id })
-        if (!foundProduct)
-            throw new NotFoundError('Product not found')
+        const foundProduct = await ProductRepository.find({
+            filter: { prod_id: toObjectIdMongo(product.prod_id), prod_is_published: true }
+        })
+        if (!foundProduct) throw new NotFoundError('Product not found')
 
         const productData = {
             ...product,
@@ -19,43 +23,41 @@ class CartService {
             prod_price: foundProduct.prod_price
         }
 
-        const userCart = await cartModel.findOne({ cart_usr_id: usr_id, 'cart_products.prod_id': product.prod_id })
+        const userCart = await CartRepository.findOne({
+            filter: { cart_usr_id: usr_id, 'cart_products.prod_id': product.prod_id }
+        })
         if (!userCart) {
-            return await this.addProductToCart(usr_id, productData)
+            const newCart = await this.createUserCart({ usr_id, productData })
+            return newCart
         }
 
-        return await this.updateUserCartQuantity({ usr_id, productData })
+        const updateCart = await this.updateUserCartQuantity({ usr_id, productData })
+        return updateCart
     }
 
-    static async addProductToCart(usr_id, productData) {
-        const query = { cart_usr_id: usr_id, cart_state: 'active' }
+    static async createUserCart({ usr_id, productData }) {
+        const payload = {
+            cart_usr_id: usr_id,
+            cart_products: [productData],
+            cart_count_product: 1,
+            cart_state: 'active'
+        }
 
-        const updateOrInsert = {
-            $addToSet: { cart_products: productData },
-            $inc: { cart_count_product: 1 }
-        }
-        const options = {
-            upsert: true, new: true
-        }
-        return await cartModel.findOneAndUpdate(query, updateOrInsert, options)
+        const newCart = await CartRepository.create({ payload })
+        return newCart
     }
 
     static async updateUserCartQuantity({ usr_id, productData }) {
         const { prod_id, quantity } = productData
-        const query = {
+        const filter = {
             cart_usr_id: usr_id,
             'cart_products.prod_id': prod_id,
             cart_state: 'active'
-        }, updateSet = {
-            $inc: {
-                'cart_products.$.quantity': quantity
-            }
-        }, options = {
-            upsert: true,
-            new: true,
         }
+        const update = { $inc: { 'cart_products.$.quantity': quantity } }
+        const options = { upsert: true, new: true };
 
-        return await cartModel.findOneAndUpdate(query, updateSet, options)
+        return await CartRepository.findOneAndUpdate(filter, update, options)
     }
 
     // 'shop_order_ids': { 'products' : { 'quantity': ,'price': ,'shop_id': ,'old_quantity': ,'prod_id': ,} 'version', }
@@ -63,15 +65,13 @@ class CartService {
         const { prod_id, quantity, old_quantity } = shop_order_id.product
         const shop_id = shop_order_id.shop_id
 
-        const foundProduct = await findProductByUser({ prod_id: prod_id })
-        if (!foundProduct)
-            throw new NotFoundError('product not found')
+        const foundProduct = await ProductRepository.find({
+            filter: { prod_id: toObjectIdMongo(product.prod_id), prod_is_published: true }
+        })
+        if (!foundProduct) throw new NotFoundError('product not found')
 
         if (foundProduct.prod_shop.toString() !== shop_id) {
-            throw new NotFoundError('Product does not belong to shop')
-        }
-        if (quantity === 0) {
-            // delete product
+            throw new BadRequestError('Product does not belong to shop')
         }
 
         return await this.updateUserCartQuantity({
@@ -89,36 +89,33 @@ class CartService {
             cart_state: 'active',
             cart_products: { $elemMatch: { prod_id } }
         }
-        const updateSet = {
-            $pull: {
-                cart_products: { prod_id }
-            },
+        const update = {
+            $pull: { cart_products: { prod_id } },
             $inc: { cart_count_product: -1 }
         }
+        const options = { upsert: true, new: true };
 
-        const deleteCart = cartModel.updateOne(query, updateSet)
-        return deleteCart
+        const updateCart = CartRepository.updateOne({ query, update, options })
+        return updateCart
     }
 
     static async getListUserCart({ usr_id }) {
-        const query = {
+        const filter = {
             cart_usr_id: usr_id,
             cart_state: 'active'
         }
-        console.log(query);
-        return await cartModel.findOne(query)
+        return await CartRepository.findOne({ filter })
     }
     static async clearUserCart({ usr_id }) {
-        const query = {
+        const filter = {
             cart_usr_id: usr_id,
             cart_state: 'active'
-        },
-            update = {
-                $set: {
-                    cart_count_product: 0, cart_products: []
-                }
-            }
-        return await cartModel.findOneAndUpdate(query, update, { new: true })
+        }
+        const update = {
+            $set: { cart_count_product: 0, cart_products: [] }
+        }
+        const options = { upsert: true, new: true };
+        return await CartRepository.findOneAndUpdate(filter, update, options)
     }
 }
 

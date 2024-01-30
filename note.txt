@@ -1,9 +1,18 @@
+////  Access Api  ////
 access-1 for small app
 access-2 for large system using rsa -> long time check token
 
 this project use access-1
 
-//// Instance in class with static,this ////
+////  Upload  ////
+Upload image to cloudinary, free tier is good
+
+////  Rule name function  ////
+Controller: handleFunctionName
+Service: functionName 
+Repository: mongoose function use
+
+////  Instance in class with static, this  ////
 class Car {
     constructor(model, year) {
         this.model = model;
@@ -25,6 +34,16 @@ console.log(myCar.numberOfWheels()); // Throws an error because numberOfWheels i
 openssl genrsa -out private_key.pem 2048
 openssl rsa -pubout -in private_key.pem -out public_key.pem
 
-//// mongoose ////
+////  mongoose  ////
 // $elemMatch query element matches a specified condition in array
 cart_products: { $elemMatch: { prod_id: prod_id } }
+
+// populate return Array replace field with doc it refence to with specific field
+.populate('prod_shop', 'prod_name prod_email -_id')
+
+// _id includes a timestamp it create
+.sort({ _id: -1 }) // sort descending (1 is ascending )
+
+// add $addToSet to "update" object after checking refresh_token
+const update = { public_key, private_key, refresh_token };
+if (token.refresh_token !== "") update.$addToSet = { refresh_tokens_used: foundToken.refresh_token };

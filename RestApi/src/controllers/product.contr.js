@@ -9,13 +9,13 @@ class ProductController {
     static handleCreateProductByShop = async (req, res, next) => {
         new CreatedResponse({
             message: 'Create new Product Success',
-            metadata: await ProductService.createProductByShop(
-                req.body.prod_type,
-                {
+            metadata: await ProductService.createProductByShop({
+                type: req.body.prod_type,
+                payload: {
                     ...req.body,
                     prod_shop: toObjectIdMongo(req.shop_id),
                 }
-            ),
+            }),
         }).send(res)
     }
 
@@ -24,7 +24,8 @@ class ProductController {
         new SuccessResponse({
             message: 'Update Product Success',
             metadata: await ProductService.updateProductByShop(
-                req.body.prod_type, req.params.productId, {
+                req.body.prod_type,
+                req.params.productId, {
                 ...req.body,
                 prod_shop: toObjectIdMongo(req.shop_id),
             }),
@@ -70,20 +71,27 @@ class ProductController {
     static handleSearchProdctByUser = async (req, res, next) => {
         new SuccessResponse({
             message: 'Search Product Result',
-            metadata: await ProductService.searchProductByUser(slugify(req.params.keySearch, { lower: true })),
+            metadata: await ProductService.searchProductByUser({
+                keySearch: slugify(req.params.keySearch, { lower: true })
+            }),
         }).send(res)
     }
 
     static handleFindAllProductsByUser = async (req, res, next) =>
         new SuccessResponse({
             message: 'Get all Products success!',
-            metadata: await ProductService.findAllProductsByUser({})
+            metadata: await ProductService.findAllProductsByUser({
+                limit: 50, page: 1, sort: 'ctime',
+                unSelectField: ['__v']
+            })
         }).send(res)
 
     static handleProductDetailByUser = async (req, res, next) =>
         new SuccessResponse({
             message: 'Get Product success!',
-            metadata: await ProductService.productDetailByUser({ prod_id: req.params.productId })
+            metadata: await ProductService.productDetailByUser({
+                prod_id: req.params.productId
+            })
         }).send(res)
 }
 

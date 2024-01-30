@@ -1,11 +1,12 @@
 'use strict'
 
 const productModel = require('../models/product.model')
-const clothingModel = require('../models/product-subclass/clothing.product.model')
-const electronicModel = require('../models/product-subclass/electronic.product.model.')
+const clothingModel = require('../models/product-types/clothing.model')
+const electronicModel = require('../models/product-types/electronic.model.')
 
-const { BadRequestError } = require('../utils/error.response')
-const { findAllDrafts,
+const { BadRequestError, NotFoundError } = require('../utils/error.response')
+const { ProductRepository,
+    findAllDrafts,
     publishProduct,
     findAllPublish,
     unPublishProduct,
@@ -14,7 +15,10 @@ const { findAllDrafts,
     findProduct,
     updateProductById,
 } = require('../models/repositories/product.repo')
-const { updateNestedObjectParser, getUnSelectData } = require('../utils')
+
+const ElectronicRepository = require('../models/repositories/product-types-repo/electronic.model')
+const ClothingRepository = require('../models/repositories/product-types-repo/clothing.repo')
+const { updateNestedObjectParser, getUnSelectData, getSelectData } = require('../utils')
 // const { insertInventory } = require('../../../course/models/repositories/inventory.repo')
 // const { pushNotiToSystem } = require('../../../course/services/notification.service')
 
@@ -26,62 +30,103 @@ class ProductService {
         ProductService.productRegistry[type] = classRef
     }
 
-    static async createProductByShop(type, payload) {
+    static async createProductByShop({ type, payload }) {
         const productClass = ProductService.productRegistry[type]
         if (!productClass) throw new BadRequestError(`Invalid Product Types ${type}`)
-        return await new productClass(payload).createProduct()
+        const newProduct = await new productClass(payload).createProduct()
+        return newProduct
     }
 
-    static async updateProductByShop(type, prod_id, payload) {
+    static async updateProductByShop({ type, prod_id, payload }) {
         const productClass = ProductService.productRegistry[type]
         if (!productClass) throw new BadRequestError(`Invalid Product Types ${type}`)
-        return await new productClass(payload).updateProduct(prod_id)
+        const updateProduct = await new productClass(payload).updateProduct(prod_id)
+        return updateProduct
     }
 
     static async publishProductByShop({ prod_shop, prod_id }) {
-        return await publishProduct(prod_shop, prod_id)
+        const updateProduct = await ProductRepository.findOneAndUpdate({
+            filter: { prod_id, prod_shop },
+            update: { prod_is_draft: false, prod_is_published: true },
+            options: { new: true }
+        })
+        return updateProduct;
     }
 
     static async unPublishProductByShop({ prod_shop, prod_id }) {
-        return await unPublishProduct(prod_shop, prod_id)
+        const updateProduct = await ProductRepository.findOneAndUpdate({
+            filter: { prod_id, prod_shop },
+            update: { prod_is_draft: true, prod_is_published: false },
+            options: { new: true }
+        })
+        return updateProduct;
     }
 
-    static async getAllDraftsByShop({ prod_shop, limit = 50, skip = 0 }) {
-        const query = { prod_shop, prod_is_draft: true }
-        return await findAllDrafts(query, limit, skip)
+    static async getAllDraftsByShop({ prod_shop, limit = 50, page = 1 }) {
+        const skip = (page - 1) * limit;
+        const foundProducts = await ProductRepository.find({
+            filter: { prod_shop, prod_is_draft: true },
+        }).skip(skip).limit(limit)
+
+        return foundProducts
     }
 
-    static async getAllPublishByShop({ prod_shop, limit = 50, skip = 0 }) {
-        const query = { prod_shop, prod_is_published: true }
-        return await findAllPublish(query, limit, skip)
+    static async getAllPublishByShop({ prod_shop, limit = 50, page = 1 }) {
+        const skip = (page - 1) * limit;
+        const foundProducts = await ProductRepository.find({
+            filter: { prod_shop, prod_is_published: true },
+        }).limit(limit).skip(skip)
+
+        return foundProducts
     }
 
-    static async searchProductByUser(keySearch) {
-        return await searchProduct(keySearch)
+    static async searchProductByUser({ keySearch }) {
+        const regexSearch = new RegExp(keySearch)
+
+        const results = await ProductRepository.find({
+            filter: {
+                prod_is_published: true,
+                $text: { $search: regexSearch }
+            },
+        }, { score: { $meta: 'textScore' } })    // score is special feature of $text search
+            .sort({ score: { $meta: 'textScore' } })
+            .lean()
+        return results;
     }
 
     static async findAllProductsByUser({
-        limit = 50, sort = 'ctime', page = 1,
+        limit = 50, page = 1, sort = 'ctime',
         filter = { prod_is_published: true },
-        select = ['prod_name', 'prod_price', 'prod_thumb', 'prod_shop', 'prod_slug']
+        unSelectField = ['__v']
     }) {
-        return await findAllProducts(limit, sort, page, filter, select)
+        const skip = (page - 1) * limit;
+        const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 }
+
+        const products = await ProductRepository.find({
+            filter,
+            projection: getUnSelectData({ select: unSelectField })
+        }).sort(sortBy).skip(skip).limit(limit).lean()
+
+        return products
     }
 
-    static async productDetailByUser({ prod_id }) {
-        return await findProduct({ prod_id, unSelect: getUnSelectData(['__v']) })
+    static async productDetailByUser({
+        prod_id,
+        unSelectField = ['__v']
+    }) {
+        const product = await ProductRepository.findById({
+            prod_id,
+            projection: getUnSelectData({ unSelect: unSelectField })
+        })
+        if (!product) throw new NotFoundError('Not found Product')
+        return product
     }
 }
 
 class Product {
     constructor({
-        prod_name,
-        prod_thumb,
-        prod_price,
-        prod_type,
-        prod_shop,
-        prod_attributes,
-        prod_quantity
+        prod_name, prod_thumb, prod_price, prod_type,
+        prod_shop, prod_attributes, prod_quantity
     }) {
         this.prod_name = prod_name
         this.prod_thumb = prod_thumb
@@ -92,9 +137,9 @@ class Product {
         this.prod_quantity = prod_quantity
     }
     // create new product
-    async createProduct(prod_id) {
-
-        const newProduct = await productModel.create({ ...this, _id: prod_id })
+    async createProduct() {
+        const payload = this
+        const newProduct = await ProductRepository.create({ payload })
         // if (newProduct) {
         //     // add prod_stock in inventory collection 
         //     await insertInventory({
@@ -121,8 +166,10 @@ class Product {
 
 
     // update Product
-    async updateProduct(prod_id, bodyUpdate) {
-        return await updateProductById({ prod_id, bodyUpdate, model: productModel })
+    async updateProduct({ prod_id, payload }) {
+        return await ProductRepository.findByIdAndUpdate({
+            prod_id, update: payload, options: { new: true }
+        })
     }
 }
 
@@ -132,31 +179,28 @@ class ClothingProduct extends Product {
         const newProduct = await super.createProduct()
         if (!newProduct) throw new BadRequestError('create new Product error')
 
-        const newClothing = await clothingModel.create({
+        const payload = {
             ...this.prod_attributes,
             _id: newProduct._id,
             prod_shop: newProduct.prod_shop
-        })
-        if (!newClothing) throw new BadRequestError('create new Clothing error')
+        }
+        const newClothing = await ClothingRepository.create({ payload })
+        if (!newClothing) throw new BadRequestError('create new Clothing Product error')
 
-        return {
-            newProduct,
-            newClothing
-        };
+        return { product: newProduct };
     }
 
     async updateProduct(prod_id) {
-        const objectParams = this
-        const updateProduct = await super.updateProduct(prod_id, updateNestedObjectParser(objectParams))
+        // this: Product inherit contructor
+        const payload = updateNestedObjectParser(this)
+        const updateProduct = await super.updateProduct({ prod_id, payload })
 
-        if (objectParams.prod_attributes) {
-            const updatedClothing = await updateProductById({
-                prod_id,
-                bodyUpdate: updateNestedObjectParser(objectParams.prod_attributes),
-                model: clothingModel,
-            })
+        if (this.prod_attributes) {
+            const update = updateNestedObjectParser(this.prod_attributes)
+            await ProductRepository.findByIdAndUpdate(
+                { prod_id, update, options: { new: true } }
+            )
         }
-
         return updateProduct;
     }
 }
@@ -167,28 +211,28 @@ class ElectronicProduct extends Product {
         const newProduct = await super.createProduct()
         if (!newProduct) throw new BadRequestError('create new Product error')
 
-        const newElectronic = await electronicModel.create({
+        const payload = {
             ...this.prod_attributes,
             _id: newProduct._id,
             prod_shop: newProduct.prod_shop
-        })
-        if (!newElectronic) throw new BadRequestError('create new Electronic error')
+        }
+        const newElectronic = await ElectronicRepository.create({ payload })
+        if (!newElectronic) throw new BadRequestError('create new Electronic Product error')
 
-        return newProduct;
+        return { product: newProduct };
     }
 
     async updateProduct(prod_id) {
-        const objectParams = this
-        if (objectParams.prod_attributes) {
-            await updateProductById({
-                prod_id,
-                bodyUpdate: updateNestedObjectParser(objectParams),
-                model: electronicModel
-            })
-        }
-        const updateProduct = await super.updateProduct(prod_id, updateNestedObjectParser(objectParams))
+        const payload = updateNestedObjectParser(this)
+        const updateProduct = await super.updateProduct({ prod_id, payload })
 
-        return updateProduct
+        if (this.prod_attributes) {
+            const update = updateNestedObjectParser(this.prod_attributes)
+            await ProductRepository.findByIdAndUpdate(
+                { prod_id, update, options: { new: true } }
+            )
+        }
+        return updateProduct;
     }
 }
 

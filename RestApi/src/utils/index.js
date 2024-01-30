@@ -16,8 +16,8 @@ const getSelectData = ({ select = [] }) => {
     return Object.fromEntries(select.map(el => [el, 1]))
 }
 // Convert Array ['a','b'] to Object { 'a': 0, 'b': 0 }
-const getUnSelectData = ({ select = [] }) => {
-    return Object.fromEntries(select.map(el => [el, 0]))
+const getUnSelectData = ({ unSelect = [] }) => {
+    return Object.fromEntries(unSelect.map(el => [el, 0]))
 }
 
 const randomString = () => crypto.randomBytes(16).toString('hex')
@@ -30,7 +30,7 @@ const removeUndefinedObject = obj => {
     })
     return obj
 }
-
+// { 'a': 1, 'b': { 'c': 2, 'd': 3 }} -> {'a': 1,'b.c': 2,'b.d': 3}
 const updateNestedObjectParser = object => {
     const final = {};
 
@@ -47,6 +47,13 @@ const updateNestedObjectParser = object => {
     });
 
     return final;
+}
+
+// return new object with each keys have value != null
+const removeNullOrUndefined = (obj, keys) => {
+    return Object.fromEntries(
+        keys.filter(key => key in obj && obj[key] != null).map(key => [key, obj[key]])
+    );
 }
 
 module.exports = {

@@ -1,56 +1,53 @@
-const cartModel = require('../cart.model')
+'use strict'
+
+const model = require('../cart.model')
 const { getProductById } = require('./product.repo')
 const { Types } = require('mongoose')
 
-'use strict'
-
-const cartModel = require('../models/cart.model');
-const { NotFoundError } = require('../utils/error.response')
-
 class CartRepository {
-    static async addToCart(usr_id, product) {
-        // Your logic here
+
+    static create = async ({ payload }) => {
+        return await model.create(payload)
     }
 
-    static async addProductToCart(usr_id, productData) {
-        // Your logic here
+    static updateOne = async ({ filter, update, options }) => {
+        return await model.updateOne(filter, update, options)
     }
 
-    static async updateUserCartQuantity(usr_id, productData) {
-        // Your logic here
+    static findOne = async ({ filter, projection, options }) => {
+        return await model.findOne(filter, projection, options)
     }
-
-    static async updateCart(usr_id, shop_order_id) {
-        // Your logic here
-    }
-
-    static async deleteUserCart(usr_id, prod_id) {
-        const query = {
-            cart_usr_id: usr_id,
-            cart_state: 'active',
-            cart_products: { $elemMatch: { prod_id } }
-        }
-        const updateSet = {
-            $pull: {
-                cart_products: { prod_id }
-            },
-            $inc: { cart_count_product: -1 }
-        }
-
-        return await cartModel.updateOne(query, updateSet)
-    }
-
-    static async getListUserCart(usr_id) {
-        return await cartModel.findOne({
-            cart_usr_id: +usr_id
-        }).lean()
+    static findOneAndUpdate = async ({ filter, update, options }) => {
+        return await model.findOneAndUpdate(filter, update, options)
     }
 }
 
-module.exports = CartRepository
+const deleteUserCart = async (usr_id, prod_id) => {
+    const query = {
+        cart_usr_id: usr_id,
+        cart_state: 'active',
+        cart_products: { $elemMatch: { prod_id } }
+    }
+    const updateSet = {
+        $pull: {
+            cart_products: { prod_id }
+        },
+        $inc: { cart_count_product: -1 }
+    }
+
+    return await model.updateOne(query, updateSet)
+}
+
+const getListUserCart = async (usr_id) => {
+    return await model.findOne({
+        cart_usr_id: +usr_id
+    }).lean()
+}
+
+
 
 const findCartById = async (cartId) => {
-    return await cartModel.findOne({ _id: new Types.ObjectId(cartId), cart_state: 'active' }).lean()
+    return await model.findOne({ _id: new Types.ObjectId(cartId), cart_state: 'active' }).lean()
 }
 
 const checkProductByServer = async (products) => {
@@ -68,6 +65,9 @@ const checkProductByServer = async (products) => {
 
 
 module.exports = {
+    CartRepository,
+    deleteUserCart,
+    getListUserCart,
     findCartById,
     checkProductByServer
 }

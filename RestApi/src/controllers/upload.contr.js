@@ -20,12 +20,10 @@ class UploadController {
         if (!file) throw new BadRequestError('required file')
         new SuccessResponse({
             message: 'upload successfully',
-            metadata: await UploadService.uploadImageFromLocal(
-                {
-                    path: file.path,
-                    folderName: `uploaded/from-local/${req.payload._id}`,
-                }
-            )
+            metadata: await UploadService.uploadImageFromLocal({
+                file,
+                folderName: `uploaded/from-local/${req.payload._id}`,
+            })
         }).send(res);
     }
 

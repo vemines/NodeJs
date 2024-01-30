@@ -23,7 +23,4 @@ router.post('/refresh-token', authenticationUser, asyncHandler(AccessController.
 // create shop by user
 router.post('/create-shop', authenticationUser, asyncHandler(AccessController.handleCreateShop))
 
-// create shop by user
-router.patch('/update-user-info', authenticationUser, asyncHandler(AccessController.handleUpdateUserInfo))
-
 module.exports = router;

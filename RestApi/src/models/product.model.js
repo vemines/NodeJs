@@ -2,6 +2,7 @@
 
 const { model, Schema, Types } = require('mongoose');
 const slugify = require('slugify');
+
 const DOCUMENT_NAME = 'product'
 const COLLECTION_NAME = 'products'
 
@@ -15,6 +16,7 @@ const productSchema = new Schema({
     prod_type: { type: String, required: true, enum: ['Electronic', 'Clothing'] },
     prod_shop: { type: Types.ObjectId, ref: 'shop' },
     prod_attributes: { type: Schema.Types.Mixed, required: true },
+    // []
     prod_ratings: { type: Array, default: [] },
     prod_ratingsAverage: {
         type: Number, default: 0,
@@ -23,7 +25,8 @@ const productSchema = new Schema({
         // 4.345 => 4.3
         set: (val) => Math.round(val * 10) / 10
     },
-    // prod_variations: { type: Array, default: [] },
+    // []
+    prod_variations: { type: Array, default: [] },
     prod_is_draft: { type: Boolean, default: true, index: true, select: false },
     prod_is_published: { type: Boolean, default: false, index: true, select: false }
 }, {
@@ -31,8 +34,8 @@ const productSchema = new Schema({
     timestamps: true,
 })
 
-// Create index for product
-productSchema.index({ prod_slug: 'text' }) // for search
+// Create index for product for search by prod_slug
+productSchema.index({ prod_slug: 'text' })
 
 // Document middleware: runs before .save() and .create()
 productSchema.pre('save', function (next) {
@@ -40,13 +43,5 @@ productSchema.pre('save', function (next) {
     next()
 })
 
-// Document middleware: runs before .updateProductById() for patch request
-productSchema.pre('findOneAndUpdate', function (next) {
-    const docToUpdate = this.getUpdate();
-    docToUpdate.prod_slug = slugify(docToUpdate.prod_name, { lower: true });
-    next();
-})
-
-//Export the model
 module.exports = model(DOCUMENT_NAME, productSchema)
 

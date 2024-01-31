@@ -6,7 +6,7 @@ const { Types } = require('mongoose')
 
 const toObjectIdMongo = (id) => new Types.ObjectId(id)
 
-// Return Json with picked fields
+// Return Json with picked fields from object
 const getInfoData = ({ fields = [], object = {} }) => {
     return lodash.pick(object, fields)
 }
@@ -30,6 +30,7 @@ const removeUndefinedObject = obj => {
     })
     return obj
 }
+
 // { 'a': 1, 'b': { 'c': 2, 'd': 3 }} -> {'a': 1,'b.c': 2,'b.d': 3}
 const updateNestedObjectParser = object => {
     const final = {};
@@ -45,15 +46,17 @@ const updateNestedObjectParser = object => {
             final[key] = object[key];
         }
     });
-
     return final;
 }
 
-// return new object with each keys have value != null
-const removeNullOrUndefined = (obj, keys) => {
-    return Object.fromEntries(
-        keys.filter(key => key in obj && obj[key] != null).map(key => [key, obj[key]])
-    );
+function getFieldsNotUndefinedFromObject({ object, fields = [] }) {
+    const updateFields = {};
+    fields.forEach(field => {
+        if (object[field] !== null && object[field] !== undefined) {
+            updateFields[field] = object[field];
+        }
+    });
+    return updateFields;
 }
 
 module.exports = {
@@ -64,4 +67,5 @@ module.exports = {
     removeUndefinedObject,
     updateNestedObjectParser,
     randomString,
+    getFieldsNotUndefinedFromObject
 }   

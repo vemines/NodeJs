@@ -1,3 +1,4 @@
+'use strict'
 
 const { StatusCodes, ReasonPhrases } = require('../../../HttpStatusCode')
 

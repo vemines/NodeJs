@@ -16,28 +16,4 @@ class ShopRepository {
     }
 }
 
-const findByEmail = async (email) => {
-    return await model.findOne({ usr_email: email }).lean()
-}
-
-const findById = async (id) => {
-    return await model.findById(id)
-}
-
-const createShop = async (usr_name, usr_slug, usr_salt, usr_email, usr_password) => {
-
-    return await model.create({
-        usr_name: usr_name,
-        usr_slug: usr_slug,
-        usr_salt: usr_salt,
-        usr_email: usr_email,
-        usr_password: usr_password
-    })
-}
-
-module.exports = {
-    ShopRepository,
-    createShop,
-    findByEmail,
-    findById
-}
+module.exports = ShopRepository

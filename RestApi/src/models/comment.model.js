@@ -1,10 +1,10 @@
 'use strict'
 
 const { model, Schema, Types } = require('mongoose');
+
 const DOCUMENT_NAME = 'Comment'
 const COLLECTION_NAME = 'Comments'
 
-// Declare the Schema of the Mongo model 
 const commentSchema = new Schema({
     comment_productId: { type: Types.ObjectId, ref: 'product' },
     comment_userId: { type: Number, default: 1 },
@@ -18,5 +18,4 @@ const commentSchema = new Schema({
     collection: COLLECTION_NAME
 });
 
-//Export the model
 module.exports = model(DOCUMENT_NAME, commentSchema)

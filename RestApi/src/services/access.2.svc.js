@@ -3,13 +3,13 @@
 const bcrypt = require('bcrypt')
 const crypto = require('node:crypto')
 
+const UserService = require('./user.svc')
+const KeyTokenService = require('./key.token.2.svc')
+
 const { getInfoData, randomString } = require('../utils')
 const { BadRequestError, ForbiddenError, UnAuthorizedError, InternalServerError } = require('../utils/error.response')
-
 const { createTokenPair, createTokenPair2 } = require('../utils/auth.util')
-const UserService = require('./user.svc')     // const userModel = require('../models/user.model')
-const KeyTokenService = require('./key.token.2.svc')
-const { log } = require('node:console')
+
 
 class AccessService2 {
 
@@ -118,8 +118,8 @@ class AccessService2 {
     static signUp = async ({ name, email, password }) => {
 
         // check email exists
-        const holderUser = await UserService.findUserByEmail({ email })
-        if (holderUser) {
+        const foundUser = await UserService.findUserByEmail({ email })
+        if (foundUser) {
             throw new BadRequestError('Error: User already exist')
         }
 

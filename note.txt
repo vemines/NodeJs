@@ -1,15 +1,36 @@
 ////  Access Api  ////
 access-1 for small app
 access-2 for large system using rsa -> long time check token
-
 this project use access-1
+
+//// Request data ////
+const HEADER = {
+    API_KEY: 'x-api-key',
+    CLIENT_ID: 'x-client-id',
+    ACCESSTOKEN: 'x-access-token',
+    REFRESHTOKEN: 'x-refresh-token',
+}
+req.payload: { usr_slug, email, _id }
+req.objKey: apikeys Document
+req.keyStore: keyToken Document
+req.refresh_token: refresh token from request header
+req.access_token: access token from request header
+req.shop_id: "_id" of shop Document
+
+
+
+/// Apikey Api ////
+add/remove permissions need manual add "akp00002"
 
 ////  Upload  ////
 Upload image to cloudinary, free tier is good
+// S3 cloudfront
+openssl genrsa -out private_key.pem 2048
+openssl rsa -pubout -in private_key.pem -out public_key.pem
 
 ////  Rule name function  ////
 Controller: handleFunctionName
-Service: functionName 
+Service: functionName
 Repository: mongoose function use
 
 ////  Instance in class with static, this  ////
@@ -31,9 +52,6 @@ class Car {
 const myCar = new Car('Toyota', 2020);
 console.log(myCar.numberOfWheels()); // Throws an error because numberOfWheels is not a method of the instance
 
-openssl genrsa -out private_key.pem 2048
-openssl rsa -pubout -in private_key.pem -out public_key.pem
-
 ////  mongoose  ////
 // $elemMatch query element matches a specified condition in array
 cart_products: { $elemMatch: { prod_id: prod_id } }
@@ -47,3 +65,5 @@ cart_products: { $elemMatch: { prod_id: prod_id } }
 // add $addToSet to "update" object after checking refresh_token
 const update = { public_key, private_key, refresh_token };
 if (token.refresh_token !== "") update.$addToSet = { refresh_tokens_used: foundToken.refresh_token };
+
+// middle findOneAndUpdate have pre 2 times,2nd can be undefined so avoid using it

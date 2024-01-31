@@ -20,14 +20,15 @@ class ProductController {
     }
 
     static handleUpdateProductByShop = async (req, res, next) => {
-
         new SuccessResponse({
             message: 'Update Product Success',
-            metadata: await ProductService.updateProductByShop(
-                req.body.prod_type,
-                req.params.productId, {
-                ...req.body,
-                prod_shop: toObjectIdMongo(req.shop_id),
+            metadata: await ProductService.updateProductByShop({
+                type: req.body.prod_type,
+                prod_id: req.params.productId,
+                payload: {
+                    ...req.body,
+                    prod_shop: toObjectIdMongo(req.shop_id),
+                }
             }),
         }).send(res)
     }
@@ -52,21 +53,23 @@ class ProductController {
         }).send(res)
     }
 
-    static handleGetAllDraftsByShop = async (req, res, next) =>
+    static handleGetAllDraftsByShop = async (req, res, next) => {
         new SuccessResponse({
             message: 'Get list Draft success!',
             metadata: await ProductService.getAllDraftsByShop({
                 prod_shop: req.shop_id,
             })
         }).send(res)
+    }
 
-    static handleGetAllPublishByShop = async (req, res, next) =>
+    static handleGetAllPublishByShop = async (req, res, next) => {
         new SuccessResponse({
             message: 'Get list Publish success!',
             metadata: await ProductService.getAllPublishByShop({
                 prod_shop: req.shop_id,
             })
         }).send(res)
+    }
 
     static handleSearchProdctByUser = async (req, res, next) => {
         new SuccessResponse({
@@ -77,7 +80,7 @@ class ProductController {
         }).send(res)
     }
 
-    static handleFindAllProductsByUser = async (req, res, next) =>
+    static handleFindAllProductsByUser = async (req, res, next) => {
         new SuccessResponse({
             message: 'Get all Products success!',
             metadata: await ProductService.findAllProductsByUser({
@@ -85,14 +88,16 @@ class ProductController {
                 unSelectField: ['__v']
             })
         }).send(res)
+    }
 
-    static handleProductDetailByUser = async (req, res, next) =>
+    static handleProductDetailByUser = async (req, res, next) => {
         new SuccessResponse({
             message: 'Get Product success!',
             metadata: await ProductService.productDetailByUser({
                 prod_id: req.params.productId
             })
         }).send(res)
+    }
 }
 
 module.exports = ProductController

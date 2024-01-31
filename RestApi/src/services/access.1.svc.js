@@ -1,33 +1,29 @@
-'use  strict'
+'use strict'
+
 const bcrypt = require('bcrypt')
 const crypto = require('node:crypto')
 
-const { getInfoData, randomString, updateNestedObjectParser } = require('../utils')
-const { BadRequestError, ForbiddenError, UnAuthorizedError, InternalServerError } = require('../utils/error.response')
-
-const { createTokenPair } = require('../utils/auth.util')
 const UserService = require('./user.svc')
 const KeyTokenService = require('./key.token.1.svc')
 
-class AccessService1 {
-    static createShopByUser = async ({ usr_id }) => {
-        const newShop = await UserService.createShopByUser({ usr_id })
-        return newShop
-    }
+const { getInfoData, randomString } = require('../utils')
+const { BadRequestError, ForbiddenError, UnAuthorizedError, InternalServerError } = require('../utils/error.response')
+const { createTokenPair } = require('../utils/auth.util')
 
+
+class AccessService1 {
     static refreshToken = async ({ keyStore, payload, refresh_token, access_token }) => {
         const { usr_slug, email, _id } = payload
 
         // check token isUsed
         if (keyStore.refresh_tokens_used.includes(refresh_token)) {
             await KeyTokenService.processSusToken({ usr_slug, refresh_token, access_token })
-            throw new ForbiddenError(' Something wrng happend !! Pls relogin 1')
+            throw new ForbiddenError(' Something wrong happend !! Pls relogin 1')
         }
 
         // check refresh token isMatch
         if (keyStore.refresh_token != refresh_token) {
-            await KeyTokenService.processSusToken({ usr_slug, refresh_token, access_token })
-            throw new ForbiddenError(' Something wrng happend !! Pls relogin 2')
+            throw new UnAuthorizedError('Something wrong happend !! Pls relogin 2')
         }
 
         // check user exist
@@ -101,8 +97,8 @@ class AccessService1 {
 
     static signUp = async ({ name, email, password }) => {
         // check email exists
-        const holderUser = await UserService.findUserByEmail({ email })
-        if (holderUser) {
+        const foundUser = await UserService.findUserByEmail({ email })
+        if (foundUser) {
             throw new BadRequestError('Error: User already exist')
         }
 

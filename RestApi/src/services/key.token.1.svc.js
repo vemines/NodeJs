@@ -1,7 +1,9 @@
 'use strict';
 
-const { KeyToken1Repository, createToken, findByUserSlug, removeRefreshTokens, moveToSuspiciousToken } = require('../models/repositories/key.token.1.repo');
-const SuspiciousRepository = require('../models/repositories/suspicious.repo')
+const KeyToken1Repository = require('../models/repositories/key.token.1.repo');
+const SuspiciousRepository = require('../models/repositories/suspicious.repo');
+
+const { toObjectIdMongo } = require('../utils');
 
 class KeyTokenService {
     static createKeyToken = async ({
@@ -19,8 +21,9 @@ class KeyTokenService {
                 public_key,
                 private_key,
             }
-            //   Create a new token if it doesn't exist
-            KeyToken1Repository.create({ payload })
+            //  Create a new token if it doesn't exist
+            const newToken = KeyToken1Repository.create({ payload })
+            return newToken
         }
 
         const update = { public_key, private_key, refresh_token };
@@ -42,9 +45,7 @@ class KeyTokenService {
         const foundToken = await KeyToken1Repository.findOne({
             filter: { usr_slug }
         });
-        if (!foundToken) {
-            throw new UnAuthorizedError('Invalid Request')
-        }
+        if (!foundToken) throw new UnAuthorizedError('Invalid Request')
         const update = {
             $addToSet: { refresh_tokens_used: foundToken.refresh_token },
             $set: { refresh_token: "" }
@@ -68,17 +69,25 @@ class KeyTokenService {
                 usr_slug: foundToken.usr_slug,
                 public_key: foundToken.public_key,
                 private_key: foundToken.private_key,
-                refresh_token: foundToken.refresh_token,
+                refresh_token,
             }
             await SuspiciousRepository.create({ payload })
 
             const update = { $pull: { refresh_tokens_used: refresh_token } }
+            const options = { upsert: true, new: true };
             KeyToken1Repository.updateOne({
                 filter: { usr_slug },
                 update,
                 options
             });
         }
+    }
+
+    static getTokenByUserSlug = async ({ usr_slug }) => {
+        const foundToken = await KeyToken1Repository.findOne({
+            filter: { usr_slug }
+        });
+        return foundToken
     }
 }
 

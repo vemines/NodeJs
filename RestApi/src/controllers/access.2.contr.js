@@ -3,13 +3,7 @@
 const AccessService2 = require('../services/access.2.svc')
 const { SuccessResponse, CreatedResponse } = require('../utils/success.response')
 
-const HEADER = {
-    CLIENT_ID: 'x-client-id',
-    ACCESSTOKEN: 'x-access-token',
-}
-
 class AccessController {
-
     static handleRefreshToken = async (req, res, next) => {
         new SuccessResponse({
             message: 'Refresh token Success',

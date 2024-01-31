@@ -1,6 +1,6 @@
 'use strict'
 
-const { SuccessResponse } = require('../utils/success.response')
+const { SuccessResponse, CreatedResponse } = require('../utils/success.response')
 const UserService = require('../services/user.svc')
 
 class UserController {
@@ -10,6 +10,15 @@ class UserController {
             metadata: await UserService.updateUserInfo({
                 usr_id: req.payload._id,
                 payload: req.body
+            }),
+        }).send(res)
+    }
+
+    static handleCreateShop = async (req, res, next) => {
+        new CreatedResponse({
+            message: 'Create shop Success',
+            metadata: await UserService.createShopByUser({
+                usr_id: req.payload._id
             }),
         }).send(res)
     }

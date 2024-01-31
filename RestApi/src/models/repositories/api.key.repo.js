@@ -54,37 +54,5 @@ const addPermission = async (key, permissions) => {
 
     return apiKey
 }
-const removePermission = async (key, permissions) => {
-    //   check is permission exist
-    const holderKey = await model.findOne({ key })
 
-    forEach(permissions, (permission) => {
-        if (!holderKey.permissions.includes(permission)) {
-            throw new BadRequestError('Permission not exists')
-        }
-    })
-
-    const apiKey = await model.findOneAndUpdate(
-        { key, status: true },
-        { $pullAll: { permissions: permissions } },
-        { $pull: { permissions: { $in: permissions } } },
-        { upsert: true, new: true })
-
-    return apiKey
-}
-const disableApiKey = async (key) => {
-    const apiKey = await model.findOneAndUpdate(
-        { key, status: true },
-        { $set: { status: false } },
-        { upsert: true, new: true })
-    return apiKey
-}
-
-module.exports = {
-    ApiKeyRepository,
-    createApiKey,
-    findApiKey,
-    addPermission,
-    removePermission,
-    disableApiKey
-}
+module.exports = ApiKeyRepository

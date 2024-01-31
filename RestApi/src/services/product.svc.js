@@ -1,30 +1,20 @@
 'use strict'
 
-const productModel = require('../models/product.model')
-const clothingModel = require('../models/product-types/clothing.model')
-const electronicModel = require('../models/product-types/electronic.model.')
+const { slugify } = require('slugify')
 
-const { BadRequestError, NotFoundError } = require('../utils/error.response')
-const { ProductRepository,
-    findAllDrafts,
-    publishProduct,
-    findAllPublish,
-    unPublishProduct,
-    searchProduct,
-    findAllProducts,
-    findProduct,
-    updateProductById,
-} = require('../models/repositories/product.repo')
-
+const ProductRepository = require('../models/repositories/product.repo')
 const ElectronicRepository = require('../models/repositories/product-types-repo/electronic.model')
 const ClothingRepository = require('../models/repositories/product-types-repo/clothing.repo')
-const { updateNestedObjectParser, getUnSelectData, getSelectData } = require('../utils')
+
+const { BadRequestError, NotFoundError } = require('../utils/error.response')
+const { updateNestedObjectParser, getUnSelectData, toObjectIdMongo } = require('../utils')
+
 // const { insertInventory } = require('../../../course/models/repositories/inventory.repo')
 // const { pushNotiToSystem } = require('../../../course/services/notification.service')
 
-
 class ProductService {
-    static productRegistry = {} // key-class
+    // {'string type': className extends Product}
+    static productRegistry = {}
 
     static registerProductType(type, classRef) {
         ProductService.productRegistry[type] = classRef
@@ -46,7 +36,7 @@ class ProductService {
 
     static async publishProductByShop({ prod_shop, prod_id }) {
         const updateProduct = await ProductRepository.findOneAndUpdate({
-            filter: { prod_id, prod_shop },
+            filter: { _id: toObjectIdMongo(prod_id), prod_shop: toObjectIdMongo(prod_shop) },
             update: { prod_is_draft: false, prod_is_published: true },
             options: { new: true }
         })
@@ -55,7 +45,7 @@ class ProductService {
 
     static async unPublishProductByShop({ prod_shop, prod_id }) {
         const updateProduct = await ProductRepository.findOneAndUpdate({
-            filter: { prod_id, prod_shop },
+            filter: { _id: toObjectIdMongo(prod_id), prod_shop: toObjectIdMongo(prod_shop) },
             update: { prod_is_draft: true, prod_is_published: false },
             options: { new: true }
         })
@@ -65,8 +55,10 @@ class ProductService {
     static async getAllDraftsByShop({ prod_shop, limit = 50, page = 1 }) {
         const skip = (page - 1) * limit;
         const foundProducts = await ProductRepository.find({
-            filter: { prod_shop, prod_is_draft: true },
-        }).skip(skip).limit(limit)
+            filter: { prod_shop: toObjectIdMongo(prod_shop), prod_is_draft: true },
+            skip: skip,
+            limit: limit
+        })
 
         return foundProducts
     }
@@ -74,23 +66,23 @@ class ProductService {
     static async getAllPublishByShop({ prod_shop, limit = 50, page = 1 }) {
         const skip = (page - 1) * limit;
         const foundProducts = await ProductRepository.find({
-            filter: { prod_shop, prod_is_published: true },
-        }).limit(limit).skip(skip)
+            filter: { prod_shop: toObjectIdMongo(prod_shop), prod_is_published: true },
+            skip: skip,
+            limit: limit
+        }); // Add .exec() at the end
 
         return foundProducts
     }
 
     static async searchProductByUser({ keySearch }) {
-        const regexSearch = new RegExp(keySearch)
+        const regexSearch = new RegExp(keySearch, 'i'); // 'i' is for case-insensitive search
 
         const results = await ProductRepository.find({
             filter: {
                 prod_is_published: true,
-                $text: { $search: regexSearch }
-            },
-        }, { score: { $meta: 'textScore' } })    // score is special feature of $text search
-            .sort({ score: { $meta: 'textScore' } })
-            .lean()
+                prod_slug: { $regex: regexSearch }
+            }
+        })
         return results;
     }
 
@@ -104,8 +96,11 @@ class ProductService {
 
         const products = await ProductRepository.find({
             filter,
-            projection: getUnSelectData({ select: unSelectField })
-        }).sort(sortBy).skip(skip).limit(limit).lean()
+            projection: getUnSelectData({ select: unSelectField }),
+            sort: sortBy,
+            skip: skip,
+            limit: limit
+        })
 
         return products
     }
@@ -129,6 +124,7 @@ class Product {
         prod_shop, prod_attributes, prod_quantity
     }) {
         this.prod_name = prod_name
+        this.prod_slug = slugify(prod_name, { lower: true })
         this.prod_thumb = prod_thumb
         this.prod_price = prod_price
         this.prod_type = prod_type

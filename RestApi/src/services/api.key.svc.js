@@ -1,7 +1,8 @@
 'use strict';
 
-const { fill } = require('lodash');
-const { ApiKeyRepository, createApiKey, findApiKey, addPermission, removePermission } = require('../models/repositories/api.key.repo');
+const ApiKeyRepository = require('../models/repositories/api.key.repo');
+
+const { randomString } = require('../utils');
 
 class ApiKeyService {
     static createNewApiKey = async ({ ip_address }) => {
@@ -16,7 +17,7 @@ class ApiKeyService {
         return newKey.key;
     };
 
-    static findApiKeyByKey = async (key) => {
+    static findApiKeyByKey = async ({ key }) => {
         const foundKey = await ApiKeyRepository.findOne(
             { filter: { key, status: true } }
         )
@@ -43,10 +44,12 @@ class ApiKeyService {
         )
         if (!foundKey) throw new BadRequestError('Key not found')
 
-        const apiKey = await ApiKeyRepository.findOneAndUpdate(
-            { key, status: true },
-            { $pullAll: { permissions: permissions } },
-            { upsert: true, new: true })
+        const apiKey = await ApiKeyRepository.findOneAndUpdate({
+            filter: { key, status: true },
+            // or { $pull: { permissions: { $in: permissions } } },
+            update: { $pullAll: { permissions: permissions } },
+            options: { upsert: true, new: true }
+        })
 
         return apiKey
     };

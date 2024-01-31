@@ -9,7 +9,6 @@ const compression = require('compression')
 //init dbs 
 require('./dbs/mongo.db')
 
-//user middleware
 app.use(helmet())
 app.use(morgan('combined'))
 // compress responses

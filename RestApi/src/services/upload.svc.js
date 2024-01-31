@@ -1,12 +1,12 @@
 "use strict";
 
-const { PutObjectCommand, s3, GetObjectCommand, DeleteObjectCommand } = require('../configs/s3.config');
-const cloudinary = require("../configs/cloudinary.config");
 
+const cloudinary = require("../configs/cloudinary.config");
 const { getSignedUrl } = require("@aws-sdk/cloudfront-signer");
+
+const { PutObjectCommand, s3, GetObjectCommand, DeleteObjectCommand } = require('../configs/s3.config');
 const { randomString } = require('../utils');
 const { BadRequestError } = require('../utils/error.response');
-
 
 class UploadService {
     // upload to S3

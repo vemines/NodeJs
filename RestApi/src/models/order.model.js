@@ -6,17 +6,19 @@ const DOCUMENT_NAME = 'order'
 const COLLECTION_NAME = 'orders'
 
 const OrderSchema = new Schema({
-    order_usr_id: { type: Number, required: true },
-    order_checkout: { type: Object, default: {} }, // { totalPrice, totalApplyDiscount, feeShip }
-    order_shipping: { type: Object, default: {} }, // {street, city,  state, country}
-    order_payment: { type: Object, default: {} },
+    order_usr_id: { type: Types.ObjectId, required: true, ref: 'user' },
+    order_checkout: { type: Object, default: {} },  // { totalPrice, totalApplyDiscount, feeShip }
+    order_shipping: { type: Object, default: {} },  // {"address", "address_city"}
+    order_payment: { type: Object, default: {} },   // {}
     // []
-    order_products: { type: Array, required: true },
-    // Datetime-1234-abcd
+    order_prods: { type: Array, required: true },   // { "price", "quantity", "productId"}
+    order_discounts: { type: Array, default: [] },
+    // Datetime-randomString
     order_trackingNumber: { type: String, default: '' },
     order_status: {
         type: String,
-        enum: ['pending', 'confirmed', 'shipped', 'cancelled', 'delivered'], default: 'pending'
+        enum: ['pending', 'confirmed', 'shipped', 'cancelled', 'delivered'],
+        default: 'pending'
     }
 }, {
     timestamps: true,

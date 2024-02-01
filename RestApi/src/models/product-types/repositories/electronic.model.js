@@ -1,6 +1,6 @@
 'use strict';
 
-const model = require('../../product-types/electronic.model');
+const model = require('../electronic.model');
 
 class ElectronicRepository {
     static create = async ({ payload }) => {

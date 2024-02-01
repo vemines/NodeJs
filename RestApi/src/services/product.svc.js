@@ -3,8 +3,8 @@
 const slugify = require('slugify')
 
 const ProductRepository = require('../models/repositories/product.repo')
-const ElectronicRepository = require('../models/repositories/product-types-repo/electronic.model')
-const ClothingRepository = require('../models/repositories/product-types-repo/clothing.repo')
+const ElectronicRepository = require('../models/product-types/repositories/electronic.model')
+const ClothingRepository = require('../models/product-types/repositories/clothing.repo')
 const InventoryService = require('./inventory.svc')
 const ShopService = require('./shop.svc')
 

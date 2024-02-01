@@ -13,6 +13,7 @@ class CartService {
         const foundProduct = await ProductService.checkProductExist({
             prod_id: product.prod_id
         })
+        const userId = toObjectIdMongo(usr_id)
 
         const productPayload = {
             ...product,
@@ -21,15 +22,15 @@ class CartService {
         }
 
         const userCart = await CartRepository.findOne({
-            filter: { cart_usr_id: usr_id }
+            filter: { cart_usr_id: userId }
         })
         if (!userCart) {
-            const newCart = await this.createUserCart({ usr_id, productPayload })
+            const newCart = await this.createUserCart({ userId, productPayload })
             return newCart
         }
 
         if (userCart.cart_products.length === 0) {
-            const filter = { cart_usr_id: usr_id };
+            const filter = { cart_usr_id: userId };
             const update = {
                 cart_products: [productPayload],
                 cart_count_product: 1,
@@ -40,14 +41,14 @@ class CartService {
             return result
         }
 
-        const updateCart = await this.updateUserCartQuantity({ usr_id, productPayload })
+        const updateCart = await this.updateUserCartQuantity({ userId, productPayload })
         return updateCart
     }
 
     static async createUserCart({ usr_id, productPayload }) {
-        console.log("create");
+        const userId = toObjectIdMongo(usr_id)
         const payload = {
-            cart_usr_id: usr_id,
+            cart_usr_id: userId,
             cart_products: [productPayload],
             cart_count_product: 1,
             cart_state: 'active'
@@ -83,7 +84,7 @@ class CartService {
         }
 
         return await this.updateUserCartQuantity({
-            usr_id,
+            usr_id: toObjectIdMongo(usr_id),
             productPayload: {
                 prod_id: prod_id,
                 quantity: quantity - old_quantity
@@ -93,7 +94,7 @@ class CartService {
 
     static async deleteUserCart({ usr_id, prod_id }) {
         const query = {
-            cart_usr_id: usr_id,
+            cart_usr_id: toObjectIdMongo(usr_id),
             cart_state: 'active',
             cart_products: { $elemMatch: { prod_id } }
         }
@@ -109,14 +110,14 @@ class CartService {
 
     static async getListUserCart({ usr_id }) {
         const filter = {
-            cart_usr_id: usr_id,
+            cart_usr_id: toObjectIdMongo(usr_id),
             cart_state: 'active'
         }
         return await CartRepository.findOne({ filter })
     }
     static async clearUserCart({ usr_id }) {
         const filter = {
-            cart_usr_id: usr_id,
+            cart_usr_id: toObjectIdMongo(usr_id),
             cart_state: 'active'
         }
         console.log(await CartRepository.findOne({ filter }));

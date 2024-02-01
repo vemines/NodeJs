@@ -1,11 +1,9 @@
 'use strict'
 
 const model = require('../cart.model')
-const { getProductById } = require('./product.repo')
-const { Types } = require('mongoose')
 
 class CartRepository {
-
+    // "usr_id", "prod_id", "shop_id", "quantity", "prod_name", "prod_[price]"
     static create = async ({ payload }) => {
         return await model.create(payload)
     }

@@ -1,20 +1,34 @@
 'use strict'
 
-const { slugify } = require('slugify')
+const slugify = require('slugify')
 
 const ProductRepository = require('../models/repositories/product.repo')
 const ElectronicRepository = require('../models/repositories/product-types-repo/electronic.model')
 const ClothingRepository = require('../models/repositories/product-types-repo/clothing.repo')
+const InventoryService = require('./inventory.svc')
+const ShopService = require('./shop.svc')
 
 const { BadRequestError, NotFoundError } = require('../utils/error.response')
 const { updateNestedObjectParser, getUnSelectData, toObjectIdMongo } = require('../utils')
 
-// const { insertInventory } = require('../../../course/models/repositories/inventory.repo')
 // const { pushNotiToSystem } = require('../../../course/services/notification.service')
 
 class ProductService {
     // {'string type': className extends Product}
     static productRegistry = {}
+
+    static async getProductById({ filter }) {
+        return await ProductRepository.findOne({ filter })
+    }
+
+    static async checkProductExist({ prod_id, isPublished = true }) {
+        const filter = { _id: prod_id }
+        if (isPublished) filter.prod_is_published = true
+        const product = await ProductRepository.findOne({ filter })
+
+        if (!product) throw new BadRequestError('Product not found')
+        return product
+    }
 
     static registerProductType(type, classRef) {
         ProductService.productRegistry[type] = classRef
@@ -136,26 +150,32 @@ class Product {
     async createProduct() {
         const payload = this
         const newProduct = await ProductRepository.create({ payload })
-        // if (newProduct) {
-        //     // add prod_stock in inventory collection 
-        //     await insertInventory({
-        //         prod_id: newProduct._id,
-        //         shopId: this.prod_shop,
-        //         stock: this.prod_quantity,
-        //     })
-        //     pushNotiToSystem({
-        //         type: 'SHOP-001',
-        //         receivedId: 1,
-        //         senderId: this.prod_shop,
-        //         noti_content: '@@@@ Product Created By Shop @@@@',
-        //         options: {
-        //             prod_name: this.prod_name,
-        //             shop_name: this.prod_shop
-        //         }
-        //     })
-        //         .then(res => console.log(res))
-        //         .catch(err => console.error(err))
-        // }
+        if (newProduct) {
+            const foundShop = await ShopService.findShopById({
+                shop_id: this.prod_shop
+            })
+            // add prod_stock in inventory collection 
+            const invenPayload = {
+                inven_prod_id: newProduct._id,
+                inven_shop_id: newProduct.prod_shop,
+                inven_stock: newProduct.prod_quantity,
+                inven_address: foundShop.shop_address,
+                inven_address_city: foundShop.shop_address_city,
+            }
+            await InventoryService.createInventory({ payload: invenPayload })
+            //     pushNotiToSystem({
+            //         type: 'SHOP-001',
+            //         receivedId: 1,
+            //         senderId: this.prod_shop,
+            //         noti_content: '@@@@ Product Created By Shop @@@@',
+            //         options: {
+            //             prod_name: this.prod_name,
+            //             shop_name: this.prod_shop
+            //         }
+            //     })
+            //         .then(res => console.log(res))
+            //         .catch(err => console.error(err))
+        }
 
         return newProduct
     }

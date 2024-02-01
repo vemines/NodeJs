@@ -2,14 +2,15 @@
 
 const { model, Schema, Types } = require('mongoose');
 
-const DOCUMENT_NAME = 'Inventory'
-const COLLECTION_NAME = 'Inventories'
+const DOCUMENT_NAME = 'inventory'
+const COLLECTION_NAME = 'inventories'
 
 const inventorySchema = new Schema({
     inven_prod_id: { type: Types.ObjectId, ref: 'product' },
-    inven_location: { type: String, default: 'Unknown' },
-    inven_stock: { type: Number, required: true },
     inven_shop_id: { type: Types.ObjectId, ref: 'shop' },
+    inven_address_city: { type: String, default: "" },  // use shop_address_city at example
+    inven_address: { type: String, default: "" },       // use shop_address at example
+    inven_stock: { type: Number, required: true },
     // []
     inven_reservations: { type: Array, default: [] }
 }, {

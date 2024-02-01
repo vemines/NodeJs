@@ -15,7 +15,7 @@ class KeyTokenService {
 
         if (!foundToken) {
             const payload = {
-                usr_id: toObjectIdMongo(usr_id),
+                usr_id,
                 usr_slug,
                 refresh_token,
                 public_key,

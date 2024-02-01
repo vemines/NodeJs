@@ -1,7 +1,7 @@
 'use strict'
 
 const CartRepository = require('../models/repositories/cart.repo');
-const ProductRepository = require('../models/repositories/product.repo');
+const ProductService = require('./product.svc');
 
 const { toObjectIdMongo } = require('../utils');
 const { NotFoundError, BadRequestError } = require('../utils/error.response')
@@ -10,10 +10,9 @@ const { NotFoundError, BadRequestError } = require('../utils/error.response')
 class CartService {
     // "product": {"prod_id" ,"shop_id": ,"quantity": }
     static async addToCart({ usr_id, product }) {
-        const foundProduct = await ProductRepository.findOne({
-            filter: { _id: toObjectIdMongo(product.prod_id), prod_is_published: true }
+        const foundProduct = await ProductService.checkProductExist({
+            prod_id: product.prod_id
         })
-        if (!foundProduct) throw new NotFoundError('Product not found')
 
         const productPayload = {
             ...product,
@@ -76,10 +75,9 @@ class CartService {
         const { prod_id, quantity, old_quantity } = shop_order_ids.products
         const shop_id = shop_order_ids.shop_id
 
-        const foundProduct = await ProductRepository.findOne({
-            filter: { _id: toObjectIdMongo(prod_id), prod_is_published: true }
+        const foundProduct = await ProductService.checkProductExist({
+            prod_id: product.prod_id
         })
-        if (!foundProduct) throw new NotFoundError('product not found')
         if (foundProduct.prod_shop.toString() !== shop_id) {
             throw new BadRequestError('Product does not belong to shop')
         }

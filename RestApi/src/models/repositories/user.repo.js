@@ -1,9 +1,6 @@
 'use strict'
 
 const model = require('../user.model')
-const shopModel = require('../shop.model')
-const { NotFoundError, InternalServerError, BadRequestError } = require('../../utils/error.response')
-const { toObjectIdMongo, randomString } = require('../../utils')
 
 class UserRepository {
     static findOne = async ({ filter, projection, options }) => {

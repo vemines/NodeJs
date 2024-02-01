@@ -1,14 +1,14 @@
 'use strict'
 
 const model = require('../product.model')
-const { Types } = require('mongoose')
-const { BadRequestError, NotFoundError } = require('../../utils/error.response')
-const { getSelectData, getUnSelectData } = require('../../utils')
-const { toObjectIdMongo } = require('../../utils')
 
 class ProductRepository {
     static find = async ({ filter, projection, options, sort, skip, limit }) => {
-        return await model.find(filter, projection, options).sort(sort).skip(skip).limit(limit).exec()
+        let query = model.find(filter, projection, options)
+        if (skip !== undefined) query = query.skip(skip)
+        if (limit !== undefined) query = query.limit(limit)
+        if (sort !== undefined) query = query.sort(sort)
+        return await query.exec()
     }
 
     static findOne = async ({ filter, projection, options }) => {
@@ -25,7 +25,8 @@ class ProductRepository {
     static findOneAndUpdate = async ({ filter, update, options }) => {
         return await model.findOneAndUpdate(filter, update, options)
     }
-
+    // "prod_name", "prod_slug": slugify(prod_name, { lower: true }), "prod_thumb", "prod_price",
+    // "prod_type", "prod_shop", "prod_attributes" {BASE ON PRODUCT TYPE MODEL}, "prod_quantity" 
     static create = async ({ payload }) => {
         return await model.create(payload)
     }

@@ -10,7 +10,7 @@ const productSchema = new Schema({
     prod_name: { type: String, required: true },
     prod_thumb: { type: String, required: true },
     prod_slug: String,
-    // prod_description: String,
+    prod_description: String,
     prod_price: { type: Number, required: true },
     prod_quantity: { type: Number, required: true },
     prod_type: { type: String, required: true, enum: ['Electronic', 'Clothing'] },

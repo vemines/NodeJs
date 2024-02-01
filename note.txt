@@ -17,12 +17,20 @@ req.refresh_token: refresh token from request header
 req.access_token: access token from request header
 req.shop_id: "_id" of shop Document
 
-
+/// Comment Api ////
+// Nested comment (watch note-img/nested-comment.png)
 
 /// Apikey Api ////
 add/remove permissions need manual add "akp00002"
 
-////  Upload  ////
+/// Inventory Api ////
+// implement reservation when order complete
+// Advanced (need session) 
+1. create a temporary reservation when the user adds/update a product.
+2. convert to permanent reservation when the user checks out.
+3. if order incomplete, remove the reservation (at user's session or cart expires or removes the product from their cart)
+
+////  Upload Api  ////
 Upload image to cloudinary, free tier is good
 // S3 cloudfront
 openssl genrsa -out private_key.pem 2048

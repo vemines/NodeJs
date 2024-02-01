@@ -1,9 +1,6 @@
 'use strict'
 
-const { toObjectIdMongo } = require('../../utils')
-const { ForbiddenError, UnAuthorizedError, InternalServerError } = require('../../utils/error.response')
 const model = require('../key.token.2.model')
-const suspiciousTokenModel = require('../suspicious.token.model')
 
 class KeyToken2Repository {
 
@@ -14,6 +11,7 @@ class KeyToken2Repository {
     static findOne = async ({ filter, projection, options }) => {
         return await model.findOne(filter, projection, options)
     }
+    // "usr_id", "usr_slug", "refresh_token", "public_key"
     static create = async ({ payload }) => {
         return await model.create(payload)
     }

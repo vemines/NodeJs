@@ -9,6 +9,7 @@ router.use('/v1/api/api-key', require('./api-key/api.key.route'))
 router.use(asyncHandler(apikey))
 router.use(asyncHandler(permission("akp00001")))
 
+router.use('/v1/api/comment', require('./comment/comment.route'))
 router.use('/v1/api/upload', require('./upload/upload.route'))
 router.use('/v1/api/cart', require('./cart/cart.route'))
 router.use('/v1/api/product', require('./product/product.route'))

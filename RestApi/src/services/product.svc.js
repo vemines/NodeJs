@@ -9,7 +9,7 @@ const InventoryService = require('./inventory.svc')
 const ShopService = require('./shop.svc')
 
 const { BadRequestError, NotFoundError } = require('../utils/error.response')
-const { updateNestedObjectParser, getUnSelectData, toObjectIdMongo } = require('../utils')
+const { updateNestedObjectParser, getUnSelectData, toObjectIdMongo, getSelectData } = require('../utils')
 
 // const { pushNotiToSystem } = require('../../../course/services/notification.service')
 
@@ -17,8 +17,41 @@ class ProductService {
     // {'string type': className extends Product}
     static productRegistry = {}
 
-    static async getProductById({ filter }) {
-        return await ProductRepository.findOne({ filter })
+    static checkProductsCheckout = async ({ products }) => {
+
+        return await Promise.all(products.map(async product => {
+            const foundProduct = await ProductRepository.findOne({
+                filter: {
+                    _id: product.prod_id,
+                    prod_price: product.prod_price,
+                    prod_is_published: true
+                }
+            })
+            if (foundProduct) {
+                return {
+                    prod_price: foundProduct.prod_price,
+                    quantity: product.quantity,
+                    prod_id: product.prod_id
+                }
+            }
+        }))
+    }
+
+    static async getAllProduct({ filter, limit, page, sort, select }) {
+        const skip = (page - 1) * limit;
+        const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 }
+        const products = await ProductRepository.find({
+            filter,
+            // sort: sortBy,
+            // skip,
+            // limit,
+            // select
+        })
+        return products
+    }
+
+    static async getOneProduct({ filter, projection, options }) {
+        return await ProductRepository.findOne({ filter, projection, options })
     }
 
     static async checkProductExist({ prod_id, isPublished = true }) {
@@ -102,15 +135,14 @@ class ProductService {
 
     static async findAllProductsByUser({
         limit = 50, page = 1, sort = 'ctime',
-        filter = { prod_is_published: true },
-        unSelectField = ['__v']
+        filter, select = []
     }) {
         const skip = (page - 1) * limit;
         const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 }
 
         const products = await ProductRepository.find({
             filter,
-            projection: getUnSelectData({ select: unSelectField }),
+            projection: getSelectData({ fields: select }),
             sort: sortBy,
             skip: skip,
             limit: limit
@@ -124,7 +156,7 @@ class ProductService {
         unSelectField = ['__v']
     }) {
         const product = await ProductRepository.findById({
-            prod_id,
+            id: prod_id,
             projection: getUnSelectData({ unSelect: unSelectField })
         })
         if (!product) throw new NotFoundError('Not found Product')

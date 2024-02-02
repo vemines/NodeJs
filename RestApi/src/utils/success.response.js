@@ -3,7 +3,7 @@
 const { StatusCodes, ReasonPhrases } = require('../../../HttpStatusCode')
 
 class SuccessRes {
-    constructor(message = ReasonPhrases.OK, statusCode = StatusCodes.OK, reasonPhrases = ReasonPhrases.OK, metadata = {}) {
+    constructor(message = ReasonPhrases.OK, metadata = {}, statusCode = StatusCodes.OK, reasonPhrases = ReasonPhrases.OK) {
         this.message = !message ? reasonPhrases : message
         this.status = statusCode
         this.metadata = metadata
@@ -15,14 +15,14 @@ class SuccessRes {
 }
 
 class SuccessResponse extends SuccessRes {
-    constructor(message, metadata) {
+    constructor({ message, metadata }) {
         super(message, metadata)
     }
 }
 
 class CreatedResponse extends SuccessRes {
-    constructor(message = ReasonPhrases.CREATED, statusCode = StatusCodes.CREATED, reasonPhrases = ReasonPhrases.CREATED, metadata) {
-        super(message, statusCode, reasonPhrases, metadata)
+    constructor({ message = ReasonPhrases.CREATED, metadata, statusCode = StatusCodes.CREATED, reasonPhrases = ReasonPhrases.CREATED }) {
+        super(message, metadata, statusCode, reasonPhrases)
         this.metadata = metadata
     }
 }

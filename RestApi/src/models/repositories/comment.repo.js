@@ -8,8 +8,8 @@ class CommentRepository {
         return await model.create(payload)
     }
 
-    static findById = async ({ comment_id, update, options }) => {
-        return await model.findById(comment_id, update, options)
+    static findById = async ({ id, update, options }) => {
+        return await model.findById(id, update, options)
     }
 
     static find = async ({ filter, projection, options, limit, skip, sort }) => {

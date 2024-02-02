@@ -7,8 +7,7 @@ const pushToLogDiscord = async (req, res, next) => {
             title: `Method: ${req.method}`,
             code: req.method === 'GET' ? req.query : req.body,
             message: `${req.get('host')}${req.originalUrl}`
-        })
-        return next()
+        })        return next()
     } catch (error) {
         next(error)
     }

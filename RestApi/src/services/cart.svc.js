@@ -4,10 +4,15 @@ const CartRepository = require('../models/repositories/cart.repo');
 const ProductService = require('./product.svc');
 
 const { toObjectIdMongo } = require('../utils');
-const { NotFoundError, BadRequestError } = require('../utils/error.response')
+const { BadRequestError } = require('../utils/error.response')
 
 
 class CartService {
+    static async getCartById({ id }) {
+        const foundCart = await CartRepository.findById({ id })
+        if (!foundCart) throw new BadRequestError('cart not exisis')
+        return foundCart
+    }
     // "product": {"prod_id" ,"shop_id": ,"quantity": }
     static async addToCart({ usr_id, product }) {
         const foundProduct = await ProductService.checkProductExist({

@@ -72,7 +72,6 @@ const authenticationShop = asyncHandler(async (req, res, next) => {
     if (!usr_id) throw new UnAuthorizedError('Invalid Request')
 
     const foundUser = await UserService.findUserById({ usr_id })
-    if (!foundUser) throw new NotFoundError('Not found User')
 
     if (foundUser.usr_is_seller && !!foundUser.usr_shop_id) {
         req.shop_id = foundUser.usr_shop_id

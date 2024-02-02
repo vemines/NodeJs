@@ -7,8 +7,8 @@ class ShopRepository {
         return await model.findOne(filter, projection, options)
     }
 
-    static findById = async ({ shop_id, projection, options }) => {
-        return await model.findById(shop_id, projection, options)
+    static findById = async ({ id, projection, options }) => {
+        return await model.findById(id, projection, options)
     }
 
     static create = async ({ payload }) => {

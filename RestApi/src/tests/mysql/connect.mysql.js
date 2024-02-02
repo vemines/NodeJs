@@ -35,8 +35,7 @@ const insertBatch = async () => {
             } else {
                 console.log('batch run success')
             }
-        })
-        return;
+        })        return;
     }
 
     const sql = `INSERT INTO test_table (id, name, age, address) VALUES ?`

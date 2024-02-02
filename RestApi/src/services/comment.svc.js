@@ -12,7 +12,7 @@ class CommenntService {
         const { prod_id, usr_id, content, comment_parent_id = null } = payload
         let rightValue
         if (comment_parent_id) {
-            const parentComment = await CommentRepository.findById({ comment_id: comment_parent_id })
+            const parentComment = await CommentRepository.findById({ id: comment_parent_id })
             if (!parentComment) throw new NotFoundError('parent comment not found')
             rightValue = parentComment.comment_right
 
@@ -55,7 +55,6 @@ class CommenntService {
             comment_right: rightValue + 1
         }
         const comment = CommentRepository.create({ payload: commectPayload })
-
         return comment
     }
 
@@ -74,7 +73,7 @@ class CommenntService {
         }
 
         if (comment_parent_id) {
-            const parent = await CommentRepository.findById({ comment_id: comment_parent_id })
+            const parent = await CommentRepository.findById({ id: comment_parent_id })
             if (!parent) throw new NotFoundError('Not found comment parent')
             const filter = {
                 comment_prod_id: toObjectIdMongo(prod_id),
@@ -94,7 +93,6 @@ class CommenntService {
         }
 
         const comments = await CommentRepository.find({ filter, projection, limit, skip, sort })
-
         return comments
     }
 
@@ -107,7 +105,7 @@ class CommenntService {
         })
 
         // define left and right of comment_id
-        const comment = await CommentRepository.findById({ comment_id })
+        const comment = await CommentRepository.findById({ id: comment_id })
         if (!comment) throw new NotFoundError('Comment not found')
 
         // Find width for removal and update
@@ -136,7 +134,6 @@ class CommenntService {
         }
         update = { $inc: { comment_left: -width } }
         await CommentRepository.updateMany({ filter, update })
-
         return true;
     }
 }

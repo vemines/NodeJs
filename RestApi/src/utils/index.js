@@ -12,12 +12,12 @@ const getInfoData = ({ fields = [], object = {} }) => {
 }
 
 // Convert Array ['a','b'] to Object { 'a': 1, 'b': 1 }
-const getSelectData = ({ select = [] }) => {
-    return Object.fromEntries(select.map(el => [el, 1]))
+const getSelectData = ({ fields = [] }) => {
+    return Object.fromEntries(fields.map(el => [el, 1]))
 }
 // Convert Array ['a','b'] to Object { 'a': 0, 'b': 0 }
-const getUnSelectData = ({ unSelect = [] }) => {
-    return Object.fromEntries(unSelect.map(el => [el, 0]))
+const getUnSelectData = ({ fields = [] }) => {
+    return Object.fromEntries(fields.map(el => [el, 0]))
 }
 
 const randomString = () => crypto.randomBytes(16).toString('hex')

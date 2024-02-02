@@ -26,8 +26,7 @@ class Database {
     static getInstance() {
         if (!Database.instance) {
             Database.instance = new Database()
-        }
-        return Database.instance
+        } return Database.instance
     }
 }
 

@@ -8,7 +8,7 @@ class ProductRepository {
         if (skip !== undefined) query = query.skip(skip)
         if (limit !== undefined) query = query.limit(limit)
         if (sort !== undefined) query = query.sort(sort)
-        return await query.exec()
+        return query.exec()
     }
 
     static findOne = async ({ filter, projection, options }) => {
@@ -18,8 +18,8 @@ class ProductRepository {
     static findByIdAndUpdate = async ({ prod_id, update, options }) => {
         return await model.findByIdAndUpdate(prod_id, update, options)
     }
-    static findById = async ({ prod_id, projection, options }) => {
-        return await model.findById(prod_id, projection, options)
+    static findById = async ({ id, projection, options }) => {
+        return await model.findById(id, projection, options)
     }
 
     static findOneAndUpdate = async ({ filter, update, options }) => {

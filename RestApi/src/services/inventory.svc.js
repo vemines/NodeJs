@@ -30,7 +30,6 @@ class InventoryService {
             }
         }
         const options = { upsert: true, new: true }
-
         return await InventoryRepository.updateOne({ query: filter, update, options })
     }
 
@@ -54,7 +53,6 @@ class InventoryService {
             }
         }
         const options = { upsert: true, new: true }
-
         return await InventoryRepository.updateOne({ query: filter, update, options })
     }
 
@@ -71,7 +69,6 @@ class InventoryService {
             $set: { inven_address, inven_address_city }
         }
         const options = { new: true }
-
         return await InventoryRepository.findOneAndUpdate({ filter, update, options })
     }
 }

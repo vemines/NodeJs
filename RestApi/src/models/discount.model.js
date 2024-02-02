@@ -24,7 +24,7 @@ const discountSchema = new Schema({
     discount_is_active: { type: Boolean, default: true },
     discount_applies_to: { type: String, required: true, enum: ['all', 'specific'] },
     // []
-    discount_product_ids: { type: Array, default: [] } // if speccific need list productId
+    discount_prod_ids: { type: Array, default: [] } // if speccific need list productId
 }, {
     timestamps: true,
     collection: COLLECTION_NAME

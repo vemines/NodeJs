@@ -9,8 +9,7 @@ class KeyTokenService {
     static getTokenByUserSlug = async ({ usr_slug }) => {
         const foundToken = await KeyToken2Repository.findOne({
             filter: { usr_slug }
-        });
-        return foundToken
+        }); return foundToken
     }
 
     static createKeyToken = async ({ usr_id, usr_slug, public_key, refresh_token }) => {
@@ -36,7 +35,6 @@ class KeyTokenService {
             update.$addToSet = { refresh_tokens_used: foundToken.refresh_token };
         }
         const options = { upsert: true, new: true };;
-
         return await KeyToken2Repository.updateOne({
             filter: { usr_slug },
             update,
@@ -55,8 +53,7 @@ class KeyTokenService {
             $addToSet: { refresh_tokens_used: foundToken.refresh_token },
             $set: { refresh_token: "" }
         };
-        const options = { upsert: true, new: true };;
-        return await KeyToken2Repository.updateOne({
+        const options = { upsert: true, new: true };; return await KeyToken2Repository.updateOne({
             filter: { usr_slug },
             update,
             options

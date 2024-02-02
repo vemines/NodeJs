@@ -27,7 +27,6 @@ class UploadService {
             dateLessThan: new Date(Date.now() + 1000 * 60),     // link valid 60s
             privateKey: process.env.AWS_CLOUD_FRONT_PRIVATE_KEY,
         });
-
         return {
             url,
             result: result
@@ -41,7 +40,6 @@ class UploadService {
             public_id: randomString(),
             folder: folderName
         })
-
         return {
             image_url: result.secure_url,
             thumb_url: cloudinary.url(result.public_id, {
@@ -57,7 +55,6 @@ class UploadService {
             public_id: randomString(),
             folder: folderName
         })
-
         return {
             image_url: result.secure_url,
             thumb_url: cloudinary.url(result.public_id, {
@@ -83,8 +80,7 @@ class UploadService {
                     width: 100, height: 100, format: 'jpg'
                 })
             })
-        }
-        return uploadedUrls
+        } return uploadedUrls
     }
 }
 

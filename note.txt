@@ -63,6 +63,11 @@ class Car {
 const myCar = new Car('Toyota', 2020);
 console.log(myCar.numberOfWheels()); // Throws an error because numberOfWheels is not a method of the instance
 
+//// Java Script Function ////
+// reduce (reduce array to single value then process it, 0 is init of acc)
+const numbers = [1, 2, 3, 4, 5];
+const sum = numbers.reduce((acc, cur) => acc + cur, 0);
+
 ////  mongoose  ////
 // $elemMatch query element matches a specified condition in array
 cart_products: { $elemMatch: { prod_id: prod_id } }

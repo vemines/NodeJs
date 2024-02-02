@@ -15,6 +15,10 @@ class CartRepository {
     static findOne = async ({ filter, projection, options }) => {
         return await model.findOne(filter, projection, options)
     }
+    static findById = async ({ id, projection, options }) => {
+        return await model.findById(id, projection, options)
+    }
+
     static findOneAndUpdate = async ({ filter, update, options }) => {
         return await model.findOneAndUpdate(filter, update, options)
     }

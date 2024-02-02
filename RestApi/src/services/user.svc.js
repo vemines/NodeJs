@@ -4,7 +4,7 @@ const UserRepository = require('../models/repositories/user.repo');
 const ShopRepository = require('../models/repositories/shop.repo');
 
 const { randomString, updateNestedObjectParser, getFieldsNotUndefinedFromObject } = require('../utils');
-const { BadRequestError } = require('../utils/error.response');
+const { BadRequestError, NotFoundError } = require('../utils/error.response');
 const { toObjectIdMongo } = require('../utils')
 
 class UserService {
@@ -13,7 +13,9 @@ class UserService {
         return await UserRepository.findOne({ filter })
     }
     static findUserById = async ({ usr_id }) => {
-        return await UserRepository.findById({ usr_id })
+        const foundUser = await UserRepository.findById({ id: usr_id })
+        if (!foundUser) throw new NotFoundError('Not found User')
+        return foundUser
     }
 
     static createUser = async ({
@@ -24,7 +26,7 @@ class UserService {
     }
 
     static createShopByUser = async ({ usr_id }) => {
-        const foundUser = await UserRepository.findById({ usr_id })
+        const foundUser = await UserRepository.findById({ id: usr_id })
         // Not found user
         if (!foundUser) throw new NotFoundError('User not found')
         // foundUser must have usr_avatar, usr_phone, usr_address, usr_address_city

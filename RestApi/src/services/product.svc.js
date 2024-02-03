@@ -7,18 +7,18 @@ const ElectronicRepository = require('../models/product-types/repositories/elect
 const ClothingRepository = require('../models/product-types/repositories/clothing.repo')
 const InventoryService = require('./inventory.svc')
 const ShopService = require('./shop.svc')
+const NotifyService = require('./notify.svc')
 
 const { BadRequestError, NotFoundError } = require('../utils/error.response')
 const { updateNestedObjectParser, getUnSelectData, toObjectIdMongo, getSelectData } = require('../utils')
 
-// const { pushNotiToSystem } = require('../../../course/services/notification.service')
+
 
 class ProductService {
     // {'string type': className extends Product}
     static productRegistry = {}
 
     static checkProductsCheckout = async ({ products }) => {
-
         return await Promise.all(products.map(async product => {
             const foundProduct = await ProductRepository.findOne({
                 filter: {
@@ -42,10 +42,10 @@ class ProductService {
         const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 }
         const products = await ProductRepository.find({
             filter,
-            // sort: sortBy,
-            // skip,
-            // limit,
-            // select
+            sort: sortBy,
+            skip,
+            limit,
+            select
         })
         return products
     }
@@ -167,7 +167,7 @@ class ProductService {
 class Product {
     constructor({
         prod_name, prod_thumb, prod_price, prod_type,
-        prod_shop, prod_attributes, prod_quantity
+        prod_shop, prod_attributes, prod_quantity, shop_address, shop_address_city
     }) {
         this.prod_name = prod_name
         this.prod_slug = slugify(prod_name, { lower: true })
@@ -177,7 +177,10 @@ class Product {
         this.prod_shop = prod_shop
         this.prod_attributes = prod_attributes
         this.prod_quantity = prod_quantity
+        this.shop_address = shop_address
+        this.shop_address_city = shop_address_city
     }
+
     // create new product
     async createProduct() {
         const payload = this
@@ -195,23 +198,21 @@ class Product {
                 inven_address_city: foundShop.shop_address_city,
             }
             await InventoryService.createInventory({ payload: invenPayload })
-            //     pushNotiToSystem({
-            //         type: 'SHOP-001',
-            //         receivedId: 1,
-            //         senderId: this.prod_shop,
-            //         noti_content: '@@@@ Product Created By Shop @@@@',
-            //         options: {
-            //             prod_name: this.prod_name,
-            //             shop_name: this.prod_shop
-            //         }
-            //     })
-            //         .then(res => console.log(res))
-            //         .catch(err => console.error(err))
+
+            await NotifyService.pushNotifyByShop({
+                type: 'SHOP-001',
+                receivedId: foundShop.usr_slug,
+                senderId: this.prod_shop,
+                noti_content: `Shop created new product`,
+                options: {
+                    prod_name: this.prod_name,
+                    shop_name: foundShop.shop_name
+                }
+            })
         }
 
         return newProduct
     }
-
 
     // update Product
     async updateProduct({ prod_id, payload }) {

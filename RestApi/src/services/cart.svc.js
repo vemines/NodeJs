@@ -8,13 +8,13 @@ const { BadRequestError } = require('../utils/error.response')
 
 
 class CartService {
-    static async getCartById({ id }) {
+    static getCartById = async ({ id }) => {
         const foundCart = await CartRepository.findById({ id })
         if (!foundCart) throw new BadRequestError('cart not exisis')
         return foundCart
     }
     // "product": {"prod_id" ,"shop_id": ,"quantity": }
-    static async addToCart({ usr_id, product }) {
+    static addToCart = async ({ usr_id, product }) => {
         const foundProduct = await ProductService.checkProductExist({
             prod_id: product.prod_id
         })
@@ -27,7 +27,7 @@ class CartService {
         }
 
         const userCart = await CartRepository.findOne({
-            filter: { cart_usr_id: userId }
+            filter: { cart_usr_id: userId, cart_state: active }
         })
         if (!userCart) {
             const newCart = await this.createUserCart({ userId, productPayload })
@@ -46,11 +46,11 @@ class CartService {
             return result
         }
 
-        const updateCart = await this.updateUserCartQuantity({ userId, productPayload })
+        const updateCart = await this.updateCartQuantity({ userId, productPayload })
         return updateCart
     }
 
-    static async createUserCart({ usr_id, productPayload }) {
+    static createUserCart = async ({ usr_id, productPayload }) => {
         const userId = toObjectIdMongo(usr_id)
         const payload = {
             cart_usr_id: userId,
@@ -63,7 +63,7 @@ class CartService {
         return newCart
     }
 
-    static async updateUserCartQuantity({ usr_id, productPayload }) {
+    static updateCartQuantity = async ({ usr_id, productPayload }) => {
         const { prod_id, quantity } = productPayload
         const filter = {
             cart_usr_id: usr_id,
@@ -77,7 +77,7 @@ class CartService {
     }
 
     // 'shop_order_ids': { 'products' : { 'quantity': ,'old_quantity': ,'prod_id': ,} 'version', }
-    static async updateCart({ usr_id, shop_order_ids }) {
+    static updateCart = async ({ usr_id, shop_order_ids }) => {
         const { prod_id, quantity, old_quantity } = shop_order_ids.products
         const shop_id = shop_order_ids.shop_id
 
@@ -88,7 +88,7 @@ class CartService {
             throw new BadRequestError('Product does not belong to shop')
         }
 
-        return await this.updateUserCartQuantity({
+        return await this.updateCartQuantity({
             usr_id: toObjectIdMongo(usr_id),
             productPayload: {
                 prod_id: prod_id,
@@ -97,7 +97,7 @@ class CartService {
         })
     }
 
-    static async deleteUserCart({ usr_id, prod_id }) {
+    static deleteUserCart = async ({ usr_id, prod_id }) => {
         const query = {
             cart_usr_id: toObjectIdMongo(usr_id),
             cart_state: 'active',
@@ -113,14 +113,14 @@ class CartService {
         return updateCart
     }
 
-    static async getListUserCart({ usr_id }) {
+    static getListUserCart = async ({ usr_id }) => {
         const filter = {
             cart_usr_id: toObjectIdMongo(usr_id),
             cart_state: 'active'
         }
         return await CartRepository.findOne({ filter })
     }
-    static async clearUserCart({ usr_id }) {
+    static clearUserCart = async ({ usr_id }) => {
         const filter = {
             cart_usr_id: toObjectIdMongo(usr_id),
             cart_state: 'active'
@@ -128,6 +128,31 @@ class CartService {
         console.log(await CartRepository.findOne({ filter }));
         const update = {
             $set: { cart_count_product: 0, cart_products: [] }
+        }
+        const options = { new: true };
+        return await CartRepository.findOneAndUpdate({ filter, update, options })
+    }
+
+    static transferCartUserId = async ({ old_usr_id, new_usr_id, cart_id }) => {
+        const filter = {
+            _id: toObjectIdMongo(cart_id),
+            cart_usr_id: toObjectIdMongo(old_usr_id),
+            cart_state: 'active'
+        }
+        const update = {
+            $set: { cart_usr_id: toObjectIdMongo(new_usr_id) }
+        }
+        const options = { new: true };
+        return await CartRepository.findOneAndUpdate({ filter, update, options })
+    }
+
+    static completeCart = async ({ cart_id }) => {
+        const filter = {
+            _id: toObjectIdMongo(cart_id),
+            cart_state: 'active'
+        }
+        const update = {
+            $set: { cart_state: 'complete' }
         }
         const options = { new: true };
         return await CartRepository.findOneAndUpdate({ filter, update, options })

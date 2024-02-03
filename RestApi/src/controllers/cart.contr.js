@@ -53,6 +53,15 @@ class CartController {
             })
         }).send(res)
     }
+
+    static handleTransferUserId = async (req, res, next) => {
+        return new SuccessResponse({
+            message: 'tranfers user id Success',
+            metadata: await CartService.transferCartUserId({
+                ...req.body
+            })
+        }).send(res)
+    }
 }
 
 module.exports = CartController

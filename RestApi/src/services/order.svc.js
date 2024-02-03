@@ -1,11 +1,14 @@
 
 const CartService = require('./cart.svc')
+const UserService = require('./user.svc')
 const ProductService = require('./product.svc')
 const DiscountService = require('./discount.svc')
-// const OrderService = require('../models/order.model')
 
-const { NotFoundError, BadRequestError } = require('../utils/error.response')
-// const { acquireLock, releaseLock } = require('./redis.svc')
+const OrderRepository = require('../models/repositories/order.repo')
+const RedisService = require('./redis.svc')
+
+const { BadRequestError } = require('../utils/error.response')
+
 
 class CheckoutSerivce {
     static async orderReview({ payload }) {
@@ -25,7 +28,6 @@ class CheckoutSerivce {
             const { shop_id, shop_discounts, item_products } = shop_order_ids[i]
 
             const foundProduct = await ProductService.checkProductsCheckout({ products: item_products })
-            console.log(foundProduct);
             // check is some product not found
             if (foundProduct.some(x => !x)) {
                 throw new BadRequestError('order wrong')
@@ -52,7 +54,6 @@ class CheckoutSerivce {
                     shop_id,
                     prods: foundProduct
                 })
-                checkout_order.discount_amount += discount
                 checkout_order.totalDiscount += discount
 
                 if (discount > 0) {
@@ -71,52 +72,63 @@ class CheckoutSerivce {
         }
     }
 
-    static orderByUser = async ({
-        shop_order_ids,
-        cart_id,
-        usr_id,
-        userAddress = {},
-        userPayment = {}
-    }) => {
+    static createOrder = async ({ payload }) => {
+        const {
+            shop_order_ids, cart_id, usr_id, payment = {}
+        } = payload
+        const { usr_address = {}, usr_address_city = {} } = await UserService.findUserById({ usr_id })
+
         const { checkout_order, shop_order_ids_new } = await this.orderReview({
-            shop_order_ids,
-            cart_id,
-            usr_id,
+            payload: {
+                cart_id,
+                usr_id,
+                shop_order_ids,
+            }
         })
 
         // check exceeding inventory
-        const products = shop_order_ids_new.flatMap(order => order.item_products)
-
         const acquireProduct = []
-        for (const productItem of products) {
-            const { prod_id, quantity } = productItem
-            const keyLock = await acquireProduct(prod_id, quantity, cart_id)
-            acquireProduct.push(keyLock ? true : false)
-
-            if (keyLock) {
-                await releaseLock(keyLock)
+        const itemCheckout = shop_order_ids_new.flatMap(order => order.item_checkout)
+        for (let i = 0; i < itemCheckout.length; i++) {
+            const shop_id = itemCheckout[i].shop_id
+            // const checkoutProducts = itemCheckout[i].flatMap(checkout => checkout.item_products)
+            const checkoutProducts = Array.isArray(itemCheckout[i])
+                ? itemCheckout[i].flatMap(checkout => checkout.item_products)
+                : itemCheckout[i].item_products
+            for (const checkout of checkoutProducts) {
+                const { prod_id, quantity } = checkout
+                await ProductService.checkProductExist({
+                    prod_id,
+                })
+                const keyLock = await RedisService.acquireLockOrder({ prod_id, quantity, shop_id })
+                acquireProduct.push(keyLock ? true : false)
+                if (keyLock) {
+                    // after 5s it auto expired, 50ms * 10 is check time comment releaseLock for testing
+                    await RedisService.releaseLockOrder(keyLock)
+                }
             }
         }
-
+        // if 1 items is fail in reservationInventory warn user
         if (acquireProduct.some(x => !x)) {
+            // make sure you uncomment await RedisService.releaseLockOrder(keyLock)
             throw new BadRequestError('some product is updated, please update cart')
         }
-
-        const newOrder = await orderModel.create({
+        const payloadOrder = {
             order_usr_id: usr_id,
             order_checkout: checkout_order,
-            order_shipping: userAddress,
-            order_payment: userPayment,
+            order_shipping: usr_address + usr_address_city,
+            order_payment: payment,
             order_products: shop_order_ids_new
+        }
+        const newOrder = await OrderRepository.create({
+            payload: payloadOrder
         })
 
         if (newOrder) {
-            // remove product in cart
+            CartService.completeCart({ cart_id })
         }
         return newOrder
-
     }
-
 
     // query order [user]
     static async getOrdersByUser({ usr_id }) { }
@@ -124,13 +136,11 @@ class CheckoutSerivce {
     // query one order by id
     static async getOneOrderById() { }
 
-
     // cancel order [user]
     static async cancelOrderById() { }
 
     // update [shop]
     static async updateOrderStatusByShop() { }
 }
-
 
 module.exports = CheckoutSerivce

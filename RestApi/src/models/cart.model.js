@@ -8,7 +8,7 @@ const COLLECTION_NAME = 'carts'
 const cartSchema = new Schema({
     cart_state: {
         type: String, required: true,
-        enum: ['active', 'completed', 'failded', 'pending'], default: 'active'
+        enum: ['active', 'completed', 'failed'], default: 'active'
     },
     // []
     cart_products: { type: Array, required: true, default: [] }, // { productId ,shopId ,quantity, price }

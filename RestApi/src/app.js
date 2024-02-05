@@ -6,7 +6,7 @@ const helmet = require('helmet')
 const morgan = require('morgan')
 const compression = require('compression')
 
-const AppLogger = require('./loggers/log.logger')
+// const AppLogger = require('./loggers/log.logger')
 
 //init dbs 
 require('./dbs/mongo.db')
@@ -35,12 +35,12 @@ app.use((req, res, next) => {
 
 // Error handler Internal Server Error (500)
 app.use((error, req, res, next) => {
-    // console.error(error) // need this line for quick link to error postions
-    AppLogger.error({
-        message: error.message || 'Internal Server Error',
-        context: req.baseUrl + req.url,
-        metadata: error.status || 500
-    })
+    console.error(error)
+    // AppLogger.error({
+    //     message: error.message || 'Internal Server Error',
+    //     context: req.baseUrl + req.url,
+    //     metadata: error.status || 500
+    // })
 
     res.status(error.status || 500).send({
         error: {

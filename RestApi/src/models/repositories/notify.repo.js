@@ -7,8 +7,16 @@ class NotifyRepository {
         return await model.create(payload)
     }
 
-    static find = async ({ filter, projection, options }) => {
-        return await model.find(filter, projection, options)
+    static insertMany = async ({ payload }) => {
+        return await model.insertMany(payload)
+    }
+
+    static find = async ({ filter, projection, options, sort, skip, limit }) => {
+        let query = model.find(filter, projection, options)
+        if (skip !== undefined) query = query.skip(skip)
+        if (limit !== undefined) query = query.limit(limit)
+        if (sort !== undefined) query = query.sort(sort)
+        return query.exec()
     }
 
     static findOneAndUpdate = async ({ filter, update, options }) => {

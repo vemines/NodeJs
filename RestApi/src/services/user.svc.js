@@ -1,17 +1,35 @@
 'use strict';
 
 const UserRepository = require('../models/repositories/user.repo');
-const ShopRepository = require('../models/repositories/shop.repo');
+const ShopService = require('./shop.svc');
+const NotifyService = require('./notify.svc');
 
 const { randomString, updateNestedObjectParser, getFieldsNotUndefinedFromObject } = require('../utils');
 const { BadRequestError, NotFoundError } = require('../utils/error.response');
 const { toObjectIdMongo } = require('../utils')
 
 class UserService {
+    static subcribeShop = async ({ usr_id, shop_id }) => {
+        return await ShopService.subcribeShop({ usr_id, shop_id })
+    }
+
+    static getNotifys = async ({ usr_id }) => {
+        return await NotifyService.getUserNotifys({ usr_id })
+    }
+
+    static unSubcriberShop = async ({ usr_id, shop_id }) => {
+        return await ShopService.unSubcribeShop({ usr_id, shop_id })
+    }
+
+    static addBuyer = async ({ usr_id, shop_id }) => {
+        return await ShopService.addBuyer({ usr_id, shop_id })
+    }
+
     static findUserByEmail = async ({ email }) => {
         const filter = { usr_email: email }
         return await UserRepository.findOne({ filter })
     }
+
     static findUserById = async ({ usr_id }) => {
         const foundUser = await UserRepository.findById({ id: usr_id })
         if (!foundUser) throw new NotFoundError('Not found User')
@@ -51,7 +69,7 @@ class UserService {
             shop_email: foundUser.usr_email,
             shop_phone: foundUser.usr_phone,
         }
-        const newShop = await ShopRepository.create({ payload })
+        const newShop = await ShopService.createShop({ payload })
 
         if (!newShop) {
             throw new InternalServerError('Fail to create shop')

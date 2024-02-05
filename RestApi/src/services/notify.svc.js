@@ -1,23 +1,31 @@
 'use strict'
 
 const NotifyRepository = require('../models/repositories/notify.repo')
-const { getSelectData } = require('../utils')
+const { getSelectData, toObjectIdMongo } = require('../utils')
 
 class NotifyService {
+    static getUserNotifys = async ({ usr_id, limit = 50, page = 1 }) => {
+        const skip = (page - 1) * limit
+        const filter = {
+            noti_received_id: usr_id
+        }
+
+        return NotifyRepository.find({ filter, limit, skip })
+    }
+
     static pushNotifyByShop = async ({
-        type = 'SHOP-001', received_id, sender_id, noti_content = '', options = {}
+        type = 'SHOP-001', received_usr_ids = [], sender_id, noti_content = '', options = {}
     }) => {
-        const payload = {
+        const payload = received_usr_ids.map(received_usr_id => ({
             noti_type: type,
             noti_content,
-            noti_received_id: received_id,
-            noti_sender_id: sender_id,
+            noti_received_id: toObjectIdMongo(received_usr_id.usr_id),
+            noti_sender_id: toObjectIdMongo(sender_id),
             noti_options: options
-        }
-        const newNoti = await NotifyRepository.create({
-            payload
-        })
-        return newNoti
+        }));
+
+        const newNotis = await NotifyRepository.insertMany({ payload });
+        return newNotis;
     }
 
     static listNotifyByUser = async ({ usr_slug }) => {

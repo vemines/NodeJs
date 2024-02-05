@@ -1,0 +1,2012 @@
+{
+	"info": {
+		"_postman_id": "89da94ba-85ff-4d8d-af24-76c39b34ee2a",
+		"name": "Nodejs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30740662"
+	},
+	"item": [
+		{
+			"name": "Rest API",
+			"item": [
+				{
+					"name": "/access-1",
+					"item": [
+						{
+							"name": "Signup",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"vemines3\",\r\n    \"email\": \"vemines3@gmail.com\",\r\n    \"password\": \"hp123412\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access-1/signup",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access-1",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SignIn",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"vemines@gmail.com\",\r\n    \"password\": \"hp123412\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access-1/signin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access-1",
+										"signin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SignOut",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-client-id",
+										"value": "83d737252c84ab3256dc021e7afd00b8",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3Jfc2x1ZyI6IjgzZDczNzI1MmM4NGFiMzI1NmRjMDIxZTdhZmQwMGI4IiwiZW1haWwiOiJ2ZW1pbmVzM0BnbWFpbC5jb20iLCJfaWQiOiI2NWI5YjUwYWIwOGI2ZmJlN2M5N2E3OWIiLCJpYXQiOjE3MDY2NzAxNTgsImV4cCI6MTcwNjg0Mjk1OH0.bcwyuJ7lUn55G4oWOVcZskLmA0BELkjGIkNic92Snao",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3Jfc2x1ZyI6IjgzZDczNzI1MmM4NGFiMzI1NmRjMDIxZTdhZmQwMGI4IiwiZW1haWwiOiJ2ZW1pbmVzM0BnbWFpbC5jb20iLCJfaWQiOiI2NWI5YjUwYWIwOGI2ZmJlN2M5N2E3OWIiLCJpYXQiOjE3MDY2NzAxNTgsImV4cCI6MTcwNzI3NDk1OH0.VW2M8aesqcE_bRHX7qHmTnQl-BlPADLLLo073BacUiE",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"test Register\",\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"hp123412\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access-1/signout",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access-1",
+										"signout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-client-id",
+										"value": "83d737252c84ab3256dc021e7afd00b8",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3Jfc2x1ZyI6IjgzZDczNzI1MmM4NGFiMzI1NmRjMDIxZTdhZmQwMGI4IiwiZW1haWwiOiJ2ZW1pbmVzM0BnbWFpbC5jb20iLCJfaWQiOiI2NWI5YjUwYWIwOGI2ZmJlN2M5N2E3OWIiLCJpYXQiOjE3MDY2NzAyNzQsImV4cCI6MTcwNzI3NTA3NH0.fZ-DIgK1C5EmVlqe2tTH1eTxsK4TR3uNtxRdKfb89zw",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3Jfc2x1ZyI6IjgzZDczNzI1MmM4NGFiMzI1NmRjMDIxZTdhZmQwMGI4IiwiZW1haWwiOiJ2ZW1pbmVzM0BnbWFpbC5jb20iLCJfaWQiOiI2NWI5YjUwYWIwOGI2ZmJlN2M5N2E3OWIiLCJpYXQiOjE3MDY2NzAyNzQsImV4cCI6MTcwNjg0MzA3NH0.xt8jvfqr_RYDqTC6WMBKV8Yidcv0xSbuPCohFPqv7GE",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access-1/refresh-token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access-1",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/access-2",
+					"item": [
+						{
+							"name": "Signup",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"vemines2\",\r\n    \"email\": \"vemines2@gmail.com\",\r\n    \"password\": \"hp123412\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access-2/signup",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access-2",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SignIn",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"vemines2@gmail.com\",\r\n    \"password\": \"hp123412\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access-2/signin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access-2",
+										"signin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SignOut",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-client-id",
+										"value": "d40cf1ac4d6232a2d01a2faf2ab95e11",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3Jfc2x1ZyI6ImQ0MGNmMWFjNGQ2MjMyYTJkMDFhMmZhZjJhYjk1ZTExIiwiZW1haWwiOiJ2ZW1pbmVzMkBnbWFpbC5jb20iLCJfaWQiOiI2NWI5ZWUyYTAzY2RmOGJhNmU5NTlmMTkiLCJpYXQiOjE3MDY2ODQ4MjksImV4cCI6MTcwNjc3MTIyOX0.hb7cxRHeEtRZ-d71987UnGdgrQtoyNhMpeV9aAUlQhv3j-aOtpcNDcy8bVWXFuKgn9Bh1AQTxpubvIWK4NvE12PnZqWeV5XIUn1cXT-FwN3ZWt-M4G4jMPn_JTS_FYTosBz_adae46ZoHjR3zkfpjx_fLO3c0MNF2excaKuT61L0GI9Yf2vl_zx9mDZDF8jjVQ7DoRjErqyGQUQ6HNxdRK9voUaDhynF9assZ8HzMA5LAWTC6THgWNbYCmwKcFlgFNhMX90pGb4nx7zBY8vSoeOqWbfQX5rGhV7GwpO63XGYLuSyg5YaRDSeLYCur7osvjDYtM48FZHspLSw7FS5KU7xrm8PGVSoLt1xU27oknjfKGRt4IOYfn8KEJqq8EsD56c7tn2pQvvw8Q06hICmuMbEHAn86lHL-nJcXNSC4q-tLvzvyITEnr9kXDSrXVxrX-F8NyAGEzG5-lgxj69jk7h8k7yp7PqH428GM3Q4H-7OjRldaZRzfAw5YRHvIykzQ5jjec9ttf_UN3rCxtijRI2XAY77RmQuhpuWCcvvNTjxQiPttJol1s5FGKFYu0tpLIwXfHtgmeDmrxcq6bm-35miueCPWVby4TPR6qL3nKTXlZHWprofQNQXB7j2OIjhvp3uToTY-ufFvwRLjQgPLOSx2JQb1hm_VhQ4GlQ3tTk",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3Jfc2x1ZyI6ImQ0MGNmMWFjNGQ2MjMyYTJkMDFhMmZhZjJhYjk1ZTExIiwiZW1haWwiOiJ2ZW1pbmVzMkBnbWFpbC5jb20iLCJfaWQiOiI2NWI5ZWUyYTAzY2RmOGJhNmU5NTlmMTkiLCJpYXQiOjE3MDY2ODQ4MjksImV4cCI6MTcwNzI4OTYyOX0.LvFvFBiYGZMsyJzLVoWN2iOW3ZFD-Qz_brLSiL7O98ekw52qRYta2OWqG_vBzcIlFAXlDrlG8kuicj7_UbWa0a0eEweQi6d2JcuN-KmMX5i1AH1RTsArl3x25WOj5doDI4BXqbfRc33hrxUIsHbeJ-YGN-BShOsMndksE4Em35d8RcmY47I9Z6EoDhvhfm5Oob4PvE8D1PGkPqiAc4njhIY0sSL2vNATpUxbTs_0aL07W5_0rFVL_68TNWI21NtW83K2HmAnS7qDuwcDknyud0IMiANycTj9ucQAcQAF8LeFEqWldPnTPhd5qy-_xuUD1hy4xaaMQNyxzRItE_icPN2MK8i5lHc2csX9il7TtBUSkWhJIVeIUyLDcNjCIjHqFONRDFj-usZmSjvV2eWsNg95IF73nPYaYqwoHhaH2mpkpwwaIMAqgtURJNuVHZItTdx3Kbstl1zR_SvQXGteAb6DxMIazE8qgNywNWLzFZbcd9WfH16RBZ_nU5lTzU690eIw3mALuNfxRMpsUyJVryE6adI28fYIaGICbZCBQPFSwycaoyPMBR1nKUk8Yes2lILIRRVOt_IbY0wheL4G3hmzjyxpcE17aIOC2EeV9Urez9fowDcjlPmueU_rkxIgc6Ivwgxt-sKMNxJTiumQMpmxtlGGaxfTFZPZZg5F9OM",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"test Register\",\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"hp123412\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access-2/signout",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access-2",
+										"signout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Refresh Token",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-client-id",
+										"value": "d40cf1ac4d6232a2d01a2faf2ab95e11",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3Jfc2x1ZyI6ImQ0MGNmMWFjNGQ2MjMyYTJkMDFhMmZhZjJhYjk1ZTExIiwiZW1haWwiOiJ2ZW1pbmVzMkBnbWFpbC5jb20iLCJfaWQiOiI2NWI5ZWUyYTAzY2RmOGJhNmU5NTlmMTkiLCJpYXQiOjE3MDY2ODQ3NTIsImV4cCI6MTcwNzI4OTU1Mn0.gqzJCMnoSqNZ2ZIpu1K9emzA1R8sONtwyBUkYNGLQ3_f778Bib9rlf9YIoEEVCSKzZOu4nx36IxLg3ZDHB_0F3MuODcVz36sTcRZ3YMTGHA5AF9rnZxhwCH2iIvAAbI-pz2egaSygTmrSeR9CpdXMzAF7n3TohGy7UgFTLN5_8psCNAdSD5b492TyBpYwpfkjIBYl24ySEffh8pfdlarGyb-fcDdhYGqfo_gO5b3Mkwl9RD7PA-XGmsntER1p3CzzjMmME-bmjZahlo-1nGfYQBf5ABenQsZEsdpFTcK8wLbwDcS_Cj9iS7Iwxof_TpXz9FTF9qoV-Jr-SvCrq4f1jIoFxPeMUyUH_roNIGg7vmj934GELoQAp_fSd-MgdfcSBtioqDKg4cfhTD5PUrasxE86RhZv6T3o-_6VJs3IbIz8KtMG5kQ2M9fUzeew8yk_fg6WZzpZLJl0BYIOBH--KzYLB5IPN9VY-ETMG3RrxQM-hj4fzkqDEsjKJeclgjKyf3PEteXxTm8WFqcn_njH5f92BE8ClwgZWqEzUyK0JARJyaZrxARd5jwErCwIKfOlNauKox-GqATaNsZm-W9vIkRdwEZbVl8JfM-B3B3i5z4fO4tqfBHqTrue5FLsECxK1eqXsyVHi_HSMcquKKC5wevo0m8jgrYt1f6gwbF8sA",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3Jfc2x1ZyI6ImQ0MGNmMWFjNGQ2MjMyYTJkMDFhMmZhZjJhYjk1ZTExIiwiZW1haWwiOiJ2ZW1pbmVzMkBnbWFpbC5jb20iLCJfaWQiOiI2NWI5ZWUyYTAzY2RmOGJhNmU5NTlmMTkiLCJpYXQiOjE3MDY2ODQ3NTIsImV4cCI6MTcwNjc3MTE1Mn0.1ECIe_uI48B16NEJkOrOKdh_jEarqFxlm8q5ADqzFNOUG-EgwjtKSQsctefdcIwvj-WXVgXXgPdG9dNkqvADKxfK_pd-PeoJ1XLcXlnOC5IBj9xa4lgz5_8C_hhNMa507SpLefy_aXdc4bhI5rvz5lcPaZbhr8UktNEpfxrik1wUwro8lyMfUndeQ2Sagn-JeW_3ntW27cNhkxhVOI7Qa3HmF8PFhWLUBAB0-kBVPUSO7SWhqoC5JevGAGwi_WcL3WaxOvSU5u4YFUFU70dSmV5v_RDnCO-MxPYUP7kRx69oS-LU2gZEY8_YlJ_fg5IW5q6Oi_VQdzdQlPDu2YLceaPfJAC5UDo0F7aGoJlmSN2ulo4eTdsD7TCx5g-LOOKOK0maN-61eGyr0br4vqYdE5VBhG1EVUDhJYjCKDqIG8rD4X04wle7esAJZCuyW7hY3JVEe2j4jVhB7CAfDy6rh9AQiAwJ1nVJ-KRBC73LwDHYXn1_9RmLaSol_V6UTZYkarpRrzT01Ukf4oXq8b0sWQxxuaA2CY0mkTLBO0po9MJsvg1zUjvtwtao2ANnq7YH3ubqvqYzcAo-mrsAW2BYeiBvh-7dNhi7SilSpiuL74gjzGrU3y22SBrvp99AF2yc8CPbtpprlc_codpJQlR6bm80m4JdLIEEeNsUl_UvuCg",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/access-2/refresh-token",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"access-2",
+										"refresh-token"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/user",
+					"item": [
+						{
+							"name": "Update User Info",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usr_avatar\": \"https://i.pravatar.cc/400\",\r\n    \"usr_phone\": \"0123456799\",\r\n    \"usr_address_city\": \"TPHCM\",\r\n    \"usr_address\": \"Gigamall 240-242 Phạm Văn Đồng, quận Thủ Đức\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/update-user-info",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"update-user-info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Shop",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/user/create-shop",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"create-shop"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Subcribe Shop",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"shop_id\": \"65ba06aaa9cb0fa6916e9104\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/subcribe-shop",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"subcribe-shop"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UnSubcribe Shop",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"shop_id\": \"65ba06aaa9cb0fa6916e9104\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/user/subcribe-shop",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"subcribe-shop"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Notifys",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/user/get-notifys",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"user",
+										"get-notifys"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/api-key",
+					"item": [
+						{
+							"name": "Create Api Key",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api-key/create",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api-key",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Permissions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"key\": \"{{x-api-key}}\",\r\n    \"permissions\": [\"akp00003\",\"akp00004\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api-key/addPermission",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api-key",
+										"addPermission"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Permissions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"key\": \"{{x-api-key}}\",\r\n    \"permissions\": [\"akp00003\",\"akp00004\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api-key/removePermission",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api-key",
+										"removePermission"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/shop",
+					"item": [
+						{
+							"name": "Create Product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "// {\r\n//     \"prod_name\": \"Quần Tây Nam Hàn Quốc KJ Ống Côn Cao Cấp Chất Vải Co Giãn Dày Dặn Form Slimfit Hàn Quốc KJ-Vua Quần Jeans\",\r\n//     \"prod_price\": 169000,\r\n//     \"prod_type\": \"Clothing\",\r\n//     \"prod_thumb\": \"https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lo1b08e8vmct74\",\r\n//     \"prod_quantity\": 5,\r\n//     \"prod_attributes\": {\r\n//         \"brand\": \"KJ Vua Quần Jeans\",\r\n//         \"size\": [\r\n//             \"20\",\r\n//             \"24\",\r\n//             \"28\"\r\n//         ],\r\n//         \"material\": \"Cotton, Sợi tổng hợp\",\r\n//         \"made_in\": \"Việt Nam\",\r\n//         \"variations\": [\r\n//             \"Đen\",\r\n//             \"Xanh than\"\r\n//         ]\r\n//     }\r\n// }\r\n// {\r\n//     \"prod_name\": \"Electronic Samsung Note 10\",\r\n//     \"prod_price\": 990000,\r\n//     \"prod_type\": \"Electronic\",\r\n//     \"prod_thumb\": \"https://down-vn.img.susercontent.com/file/vn-50009109-11ef018cbe11d0bd34475cc782f7f63a\",\r\n//     \"prod_quantity\": 8888,\r\n//     \"prod_attributes\": {\r\n//         \"manufactor\": \"Samsung\",\r\n//         \"model\": \"Note 10\",\r\n//         \"color\": \"Xanh\"\r\n//     }\r\n// }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/shop/create-product",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"shop",
+										"create-product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Product",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n     \"shop_address_city\": \"TPHCM\",\r\n      \"prod_name\": \"Quần Tây Nam Hàn Quốc KJ Ống Côn Cao Cấp Chất Vải Co Giãn Dày Dặn Form Slimfit Hàn Quốc KJ-Vua Quần Jeans\",\r\n     \"prod_type\": \"Clothing\",\r\n    \"shop_address\": \"Gigamall 240-242 Phạm Văn Đồng, quận Thủ Đức\"\r\n}\r\n\r\n// {\r\n//     \"prod_name\": \"Abcdef Vải Co Giãn Dày Dặn Form Slimfit Quốc KJ-Vua Quần Jeans\",\r\n//     \"prod_price\": 169000,\r\n//     \"prod_type\": \"Clothing\",\r\n//     \"prod_quantity\": 88,\r\n//     \"prod_attributes\": {\r\n//         \"brand\": \"KJ Vua Quần Jeans\",\r\n//         \"size\": [\r\n//             \"20\",\r\n//             \"24\",\r\n//             \"28\"\r\n//         ],\r\n//         \"material\": \"Cotton, Sợi tổng hợp\",\r\n//         \"made_in\": \"Việt Nam\",\r\n//         \"variations\": [\r\n//             \"Đen\",\r\n//             \"Xanh than\"\r\n//         ]\r\n//     }\r\n// }\r\n\r\n// {\r\n//     \"prod_name\": \"Clear Cover Điện thoại Samsung Galaxy A15\",\r\n//     \"prod_price\": 990000,\r\n//     \"prod_type\": \"Electronic\",\r\n//     \"prod_thumb\": \"https://down-vn.img.susercontent.com/file/vn-50009109-11ef018cbe11d0bd34475cc782f7f63a\",\r\n//     \"prod_quantity\": 155,\r\n//     \"prod_attributes\": {\r\n//         \"manufactor\": \"Samsung\",\r\n//         \"model\": \"Galaxy A15\",\r\n//         \"color\": \"Trong suốt\"\r\n//     }\r\n// }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/shop/update-product/65b68bcf77683540933f1fae",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"shop",
+										"update-product",
+										"65b68bcf77683540933f1fae"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Publish Product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/shop/publish-product/65b68bcf77683540933f1fae",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"shop",
+										"publish-product",
+										"65b68bcf77683540933f1fae"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UnPublish Product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/shop/unPublish-product/65ba06f851d1acf657849d2c",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"shop",
+										"unPublish-product",
+										"65ba06f851d1acf657849d2c"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Draft Product",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/shop/drafts/all",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"shop",
+										"drafts",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Pulish Product",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/shop/published/all",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"shop",
+										"published",
+										"all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/product",
+					"item": [
+						{
+							"name": "Search Product",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/product/search/sli",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"product",
+										"search",
+										"sli"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get List Products",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/product/list",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"product",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Product Detail",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/product/detail/{{product-id}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"product",
+										"detail",
+										"{{product-id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/upload",
+					"item": [
+						{
+							"name": "From Url",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"url\": \"https://down-vn.img.susercontent.com/file/vn-11134201-7r98o-lnkv8k8j7zl9ef\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/upload/from-url",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"upload",
+										"from-url"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "From Local",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/Image/sample.jpeg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/upload/from-local",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"upload",
+										"from-local"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Multi From Local",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "files",
+											"type": "file",
+											"src": [
+												"/D:/Image/office.ico",
+												"/D:/Image/play.ico"
+											]
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/upload/multi-from-local",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"upload",
+										"multi-from-local"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "To S3",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/D:/Image/avataaars.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/upload/to-s3",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"upload",
+										"to-s3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/cart",
+					"item": [
+						{
+							"name": "Add Items To Cart",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usr_id\": \"{{sample-user-id-cart}}\",\r\n    \"product\": {\r\n        \"prod_id\": \"65b68bcf77683540933f1fae\",\r\n        \"shop_id\": \"65b5e0890d54e401375f515b\",\r\n        \"quantity\": 2\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/cart/add-product",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cart",
+										"add-product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Items In Cart",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usr_id\": \"{{sample-user-id-cart}}\",\r\n    \"shop_order_ids\": {\r\n        \"shop_id\": \"65b5e0890d54e401375f515b\",\r\n        \"products\": {\r\n            \"quantity\": 8,\r\n            \"old_quantity\": 6,\r\n            \"prod_id\": \"65b68bcf77683540933f1fae\"\r\n        },\r\n        \"version\": 2000\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/cart/update-cart",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cart",
+										"update-cart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Product In Cart",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"usr_id\": \"{{sample-user-id-cart}}\",\r\n    \"prod_id\": \"65b68bcf77683540933f1fae\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/cart/remove-product",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cart",
+										"remove-product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Detail Cart",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/cart/detail-cart?usr_id={{sample-user-id-cart}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cart",
+										"detail-cart"
+									],
+									"query": [
+										{
+											"key": "usr_id",
+											"value": "{{sample-user-id-cart}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Clear UserCart",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/cart/clear-cart?usr_id={{sample-user-id-cart}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"cart",
+										"clear-cart"
+									],
+									"query": [
+										{
+											"key": "usr_id",
+											"value": "{{sample-user-id-cart}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/comment",
+					"item": [
+						{
+							"name": "Create comment",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1\",\r\n//     \"comment_parent_id\": null\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.1\",\r\n//     \"comment_parent_id\": \"65bb18a8c1fadeb5d1beddc9\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.1.1\",\r\n//     \"comment_parent_id\": \"65bb18bcc1fadeb5d1beddd0\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.1.1.1\",\r\n//     \"comment_parent_id\": \"65bb18d9c1fadeb5d1beddd7\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.1.1.2\",\r\n//     \"comment_parent_id\": \"65bb18d9c1fadeb5d1beddd7\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.2\",\r\n//     \"comment_parent_id\": \"65bb18a8c1fadeb5d1beddc9\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.2.1\",\r\n//     \"comment_parent_id\": \"65bb191fc1fadeb5d1beddec\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.2.2\",\r\n//     \"comment_parent_id\": \"65bb191fc1fadeb5d1beddec\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.2.3\",\r\n//     \"comment_parent_id\": \"65bb191fc1fadeb5d1beddec\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.2.1.1\",\r\n//     \"comment_parent_id\": \"65bb19a7c1fadeb5d1bede01\"\r\n// }\r\n\r\n// {\r\n//     \"prod_id\": \"{{product-id}}\",\r\n//     \"usr_id\": \"{{sample-user-id-cart}}\",\r\n//     \"content\": \"Comment 1.2.1.2\",\r\n//     \"comment_parent_id\": \"65bb19a7c1fadeb5d1bede01\"\r\n// }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/comment/add-comment",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"comment",
+										"add-comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete comment",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"prod_id\": \"{{product-id}}\",\r\n    \"comment_id\": \"65bb18bcc1fadeb5d1beddd0\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/comment/delete-comment",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"comment",
+										"delete-comment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get List Comments",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/comment/get-comment?prod_id={{product-id}}&comment_parent_id=65bb19a7c1fadeb5d1bede01",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"comment",
+										"get-comment"
+									],
+									"query": [
+										{
+											"key": "prod_id",
+											"value": "{{product-id}}"
+										},
+										{
+											"key": "comment_parent_id",
+											"value": "65bb19a7c1fadeb5d1bede01"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/discount",
+					"item": [
+						{
+							"name": "Create Discount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"name percentage\",\r\n    \"description\": \"description\",\r\n    \"type\": \"percentage\",\r\n    \"value\": 10,\r\n    \"max_value\": 30000,\r\n    \"code\": \"SHOP-9999-2\",\r\n    \"start_date\": \"2024-02-15 09:00:00\",\r\n    \"end_date\": \"2024-02-30 09:00:00\",\r\n    \"max_uses\": 100,\r\n    \"uses_count\": 0,\r\n    \"users_used\": [],\r\n    \"max_uses_per_user\": 1,\r\n    \"min_order_value\": 20000,\r\n    \"created_by\": {},\r\n    \"is_active\": true,\r\n    \"applies_to\": \"all\",\r\n    \"prod_ids\": [\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/discount/create-discount",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"discount",
+										"create-discount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Price After Discount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"SHOP-9999-1\",\r\n    \"usr_id\": \"{{sample-user-id-cart}}\",\r\n    \"shop_id\": \"65ba06aaa9cb0fa6916e9104\",\r\n    \"prods\": [\r\n        {\r\n            \"prod_id\": \"{{product-id}}\",\r\n            \"quantity\": 5\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/discount/amount",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"discount",
+										"amount"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Product Of Discount",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/discount/list-product-code?code=SHOP-9999-2&shop_id=65ba06aaa9cb0fa6916e9104",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"discount",
+										"list-product-code"
+									],
+									"query": [
+										{
+											"key": "code",
+											"value": "SHOP-9999-2"
+										},
+										{
+											"key": "shop_id",
+											"value": "65ba06aaa9cb0fa6916e9104"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Discount Shop",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/discount/list-discount-shop?shop_id=6594e603c3d84ec21c4b1061",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"discount",
+										"list-discount-shop"
+									],
+									"query": [
+										{
+											"key": "shop_id",
+											"value": "6594e603c3d84ec21c4b1061"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/order",
+					"item": [
+						{
+							"name": "Order Review",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cart_id\": \"65ba3e92cca97a6d20b975e2\",\r\n    \"usr_id\": \"{{sample-user-id-cart}}\",\r\n    \"shop_order_ids\": [\r\n        {\r\n            \"shop_id\": \"65ba06aaa9cb0fa6916e9104\",\r\n            \"shop_discounts\": [\r\n                {\r\n                    \"code\": \"SHOP-9999-2\"\r\n                }\r\n            ],\r\n            \"item_products\": [\r\n                {\r\n                    \"prod_price\": 990000,\r\n                    \"quantity\": 20,\r\n                    \"prod_id\": \"65b68bcb77683540933f1fa7\"\r\n                },\r\n                {\r\n                    \"prod_price\": 169000,\r\n                    \"quantity\": 10,\r\n                    \"prod_id\": \"65b68bcf77683540933f1fae\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/order/review-order",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"order",
+										"review-order"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Order Checkout",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cart_id\": \"65ba3e92cca97a6d20b975e2\",\r\n    \"usr_id\": \"{{sample-user-id-cart}}\",\r\n    \"shop_order_ids\": [\r\n        {\r\n            \"shop_id\": \"65ba06aaa9cb0fa6916e9104\",\r\n            \"shop_discounts\": [\r\n                {\r\n                    \"code\": \"SHOP-9999-2\"\r\n                }\r\n            ],\r\n            \"item_products\": [\r\n                {\r\n                    \"prod_price\": 990000,\r\n                    \"quantity\": 20,\r\n                    \"prod_id\": \"65b68bcb77683540933f1fa7\"\r\n                },\r\n                {\r\n                    \"prod_price\": 169000,\r\n                    \"quantity\": 10,\r\n                    \"prod_id\": \"65b68bcf77683540933f1fae\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/order/checkout-order",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"order",
+										"checkout-order"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "/rbac",
+					"item": [
+						{
+							"name": "Create Role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "// {\r\n//     \"name\": \"admin001\",\r\n//     \"slug\": \"rs00001\",\r\n//     \"description\": \"admin extend from shop or user\",\r\n//     \"grants\": [\r\n//         {\r\n//             \"resource\": \"65bf358f3e6abe58cfcda5ba\",\r\n//             \"actions\": [\r\n//                 \"update: any\",\r\n//                 \"read: any\",\r\n//                 \"deleted:any\"\r\n//             ],\r\n//             \"attributes\": \"*\"\r\n//         },\r\n//         {\r\n//             \"resource\": \"65bf365881e5857b576f4389\",\r\n//             \"actions\": [\r\n//                 \"update: any\",\r\n//                 \"read: any\",\r\n//                 \"deleted:any\"\r\n//             ],\r\n//             \"attributes\": \"*,!amount\"\r\n//         }\r\n//     ]\r\n// }\r\n// {\r\n//     \"name\": \"shop001\",\r\n//     \"slug\": \"rs00002\",\r\n//     \"description\": \"shop extend from user\",\r\n//     \"grants\": [\r\n//         {\r\n//             \"resource\": \"65bf358f3e6abe58cfcda5ba\",\r\n//             \"actions\": [\r\n//                 \"update: own\",\r\n//                 \"read: own\"\r\n//             ],\r\n//             \"attributes\": \"*\"\r\n//         },\r\n//         {\r\n//             \"resource\": \"65bf365881e5857b576f4389\",\r\n//             \"actions\": [\r\n//                 \"read: own\"\r\n//             ],\r\n//             \"attributes\": \"*\"\r\n//         }\r\n//     ]\r\n// }\r\n\r\n{\r\n    \"name\": \"user001\",\r\n    \"slug\": \"rs00003\",\r\n    \"description\": \"user\",\r\n    \"grants\": [\r\n        {\r\n            \"resource\": \"65bf358f3e6abe58cfcda5ba\",\r\n            \"actions\": [\r\n                \"update: own\",\r\n                \"read: own\"\r\n            ],\r\n            \"attributes\": \"*\"\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/rbac/create-role",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"rbac",
+										"create-role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Roles",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/rbac/list-roles",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"rbac",
+										"list-roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Role Grants (accesscontrol format)",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/rbac/list-role-grants",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"rbac",
+										"list-role-grants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Resource",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									},
+									{
+										"key": "x-client-id",
+										"value": "{{x-client-id}}",
+										"type": "text"
+									},
+									{
+										"key": "x-refresh-token",
+										"value": "{{x-refresh-token}}",
+										"type": "text"
+									},
+									{
+										"key": "x-access-token",
+										"value": "{{x-access-token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "// {\r\n//     \"name\": \"profile\",\r\n//     \"slug\": \"r0001\",\r\n//     \"description\": \"profie global\"\r\n// }\r\n// {\r\n//     \"name\": \"balance\",\r\n//     \"slug\": \"r0002\",\r\n//     \"description\": \"balance global\"\r\n// }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/rbac/create-resource",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"rbac",
+										"create-resource"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Resources",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/rbac/list-resources",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"rbac",
+										"list-resources"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test accesscontrol viewAny",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/rbac/viewAny?role=shop001",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"rbac",
+										"viewAny"
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "shop001"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test accesscontrol viewOwn",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{x-api-key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{host}}/rbac/viewOwn?role=shop001",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"rbac",
+										"viewOwn"
+									],
+									"query": [
+										{
+											"key": "role",
+											"value": "shop001"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -14,7 +14,12 @@ const userSchema = new Schema({
     shop_avatar: { type: String, default: '' },
     shop_address_city: { type: String, default: '' },
     shop_address: { type: String, default: '' },
-    shop_role: { type: Schema.Types.ObjectId, ref: 'role' },
+    shop_role: { type: Types.ObjectId, ref: 'role' },
+    shop_subscribers: { type: Array, default: [] },
+    shop_buyer: [{
+        usr_id: { type: Types.ObjectId, ref: 'user', required: true },
+        orders: { type: Number, default: 1 }
+    }],
     shop_status: { type: String, default: 'pending', enum: ['pending', 'active', 'block'] }
 }, {
     timestamps: true,
@@ -22,3 +27,4 @@ const userSchema = new Schema({
 })
 
 module.exports = model(DOCUMENT_NAME, userSchema)
+

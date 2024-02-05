@@ -5,7 +5,7 @@ npm i uuid --save
 
 
 git add .
-git commit -m "add rbac sample, logger, order with Optimistic Look with Redis"
+git commit -m "add user sub/unsub shop, get notify"
 git push
 
 

@@ -18,7 +18,7 @@ class CheckoutSerivce {
 
         const checkout_order = {
             totalPrice: 0,
-            feeShop: 0,
+            feeShip: 20000,
             totalDiscount: 0,
             totalCheckout: 0
         }
@@ -46,7 +46,7 @@ class CheckoutSerivce {
                 price_apply_discount: checkoutPrice,
                 item_products: foundProduct
             }
-            // check discount valid
+            // check discount valid allow 1 discount
             if (shop_discounts.length > 0) {
                 const { discount = 0 } = await DiscountService.getDiscountAmount({
                     code: shop_discounts[0].code,
@@ -113,12 +113,16 @@ class CheckoutSerivce {
             // make sure you uncomment await RedisService.releaseLockOrder(keyLock)
             throw new BadRequestError('some product is updated, please update cart')
         }
+        for (let i = 0; i < itemCheckout.length; i++) {
+            const shop_id = itemCheckout[i].shop_id
+            await UserService.addBuyer({ usr_id, shop_id })
+        }
         const payloadOrder = {
             order_usr_id: usr_id,
             order_checkout: checkout_order,
-            order_shipping: usr_address + usr_address_city,
+            order_shipping: usr_address + " " + usr_address_city,
             order_payment: payment,
-            order_products: shop_order_ids_new
+            order_prods: shop_order_ids_new
         }
         const newOrder = await OrderRepository.create({
             payload: payloadOrder

@@ -5,7 +5,7 @@ const router = express.Router();
 
 const AccessController = require('../../controllers/access.2.contr');
 
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 const { authentication2 } = require('../../middlewares/auth.midware');
 
 router.post('/signup', asyncHandler(AccessController.handleSignUp))

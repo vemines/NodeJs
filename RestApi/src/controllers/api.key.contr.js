@@ -15,6 +15,7 @@ class ApiKeyController {
 
     static handleAddPermissionApiKey = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Add Permission Success',
             metadata: await ApiKeyService.addPermissionToKey({
                 key: req.body.key,
@@ -25,6 +26,7 @@ class ApiKeyController {
 
     static handleRemovePermissionApiKey = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Remove Permission Success',
             metadata: await ApiKeyService.removePermissionFromKey({
                 key: req.body.key,

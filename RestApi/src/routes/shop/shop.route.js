@@ -5,7 +5,7 @@ const router = express.Router();
 
 const ProductController = require('../../controllers/product.contr');
 
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 const { authenticationUser, authenticationShop } = require('../../middlewares/auth.midware');
 
 router.post('/create-product',

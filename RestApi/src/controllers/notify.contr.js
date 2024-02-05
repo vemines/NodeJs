@@ -6,12 +6,14 @@ const { SuccessResponse } = require('../utils/success.response')
 class NotificationController {
     handleGetListNotiByUser = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             metadata: await NotificationService.listNotifyByUser({ usr_slug: req.payload.usr_slug })
         }).send(res)
     }
 
     handleReadNotifyByUser = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             metadata: await NotificationService.readNotifyByUser({
                 usr_id: req.payload.usr_slug,
                 notify_id: req.params.notify_id

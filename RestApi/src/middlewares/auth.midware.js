@@ -6,7 +6,7 @@ const KeyTokenService1 = require('../services/key.token.1.svc')
 const KeyTokenService2 = require('../services/key.token.2.svc')
 
 const { verifyJWT } = require('../utils/auth.util')
-const { asyncHandler } = require('../utils/async.handler.util')
+const asyncHandler = require('../utils/async.handler.util')
 const { UnAuthorizedError, NotFoundError, BadRequestError } = require('../utils/error.response')
 
 const HEADER = {

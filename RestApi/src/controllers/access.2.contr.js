@@ -6,6 +6,7 @@ const { SuccessResponse, CreatedResponse } = require('../utils/success.response'
 class AccessController {
     static handleRefreshToken = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Refresh token Success',
             metadata: await AccessService2.refreshToken({
                 refresh_token: req.refresh_token,
@@ -18,6 +19,7 @@ class AccessController {
 
     static handleSignOut = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Logout Success',
             metadata: await AccessService2.signOut({
                 usr_slug: req.payload.usr_slug
@@ -27,6 +29,7 @@ class AccessController {
 
     static handleSignIn = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             metadata: await AccessService2.signIn({
                 email: req.body.email,
                 password: req.body.password,

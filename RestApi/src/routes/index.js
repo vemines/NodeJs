@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const { apikey, permission } = require('../middlewares/auth.midware');
-const { asyncHandler } = require('../utils/async.handler.util');
+const asyncHandler = require('../utils/async.handler.util');
 
 router.use('/v1/api/api-key', require('./api-key/api.key.route'))
 
 router.use(asyncHandler(apikey))
 router.use(asyncHandler(permission("akp00001")))
 
+router.use('/v1/api/rbac', require('./rbac/rbac.route'))
 router.use('/v1/api/order', require('./order/order.route'))
 router.use('/v1/api/discount', require('./discount/discount.route'))
 router.use('/v1/api/comment', require('./comment/comment.route'))

@@ -6,6 +6,7 @@ const UserService = require('../services/user.svc')
 class UserController {
     static handleUpdateUserInfo = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Update user info Success',
             metadata: await UserService.updateUserInfo({
                 usr_id: req.payload._id,

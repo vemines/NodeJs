@@ -5,7 +5,7 @@ const router = express.Router();
 
 const CommentController = require('../../controllers/comment.contr');
 
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 const { authenticationUser } = require('../../middlewares/auth.midware');
 
 router.post('/add-comment', authenticationUser, asyncHandler(CommentController.handleCreateComment))

@@ -5,7 +5,7 @@ const router = express.Router()
 
 const UploadController = require('../../controllers/upload.contr')
 
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 const { uploadDisk, uploadMemory } = require('../../configs/multer.config')
 const { authenticationUser } = require('../../middlewares/auth.midware');
 

@@ -19,6 +19,7 @@ class DiscountController {
 
     static handleGetAllDiscountCodeByShop = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             metadata: await DiscountService.getAllDiscountCodesByShop({
                 shop_id: req.shop_id
             })
@@ -27,6 +28,7 @@ class DiscountController {
 
     static handleGetDiscountAmount = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: "Get discount amount success",
             metadata: await DiscountService.getDiscountAmount({
                 ...req.body,
@@ -36,6 +38,7 @@ class DiscountController {
 
     static handleGetAllProductsForDiscountCode = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: "Get product of discount",
             metadata: await DiscountService.getAllProductsForDiscountCode({ ...req.query })
         }).send(res)

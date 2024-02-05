@@ -1,12 +1,15 @@
 'use strict'
 
 const { StatusCodes, ReasonPhrases } = require('../../../HttpStatusCode')
+// const AppLogger = require('../loggers/log.logger')
 
 class SuccessRes {
-    constructor(message = ReasonPhrases.OK, metadata = {}, statusCode = StatusCodes.OK, reasonPhrases = ReasonPhrases.OK) {
+    constructor(message = ReasonPhrases.OK, metadata = {}, context = "unknown", statusCode = StatusCodes.OK, reasonPhrases = ReasonPhrases.OK) {
         this.message = !message ? reasonPhrases : message
         this.status = statusCode
         this.metadata = metadata
+
+        // AppLogger.log({ message: this.message, context, metadata: this.metadata })
     }
 
     send(res, header = {}) {
@@ -15,15 +18,14 @@ class SuccessRes {
 }
 
 class SuccessResponse extends SuccessRes {
-    constructor({ message, metadata }) {
-        super(message, metadata)
+    constructor({ message, metadata, context }) {
+        super(message, metadata, context)
     }
 }
 
 class CreatedResponse extends SuccessRes {
-    constructor({ message = ReasonPhrases.CREATED, metadata, statusCode = StatusCodes.CREATED, reasonPhrases = ReasonPhrases.CREATED }) {
-        super(message, metadata, statusCode, reasonPhrases)
-        this.metadata = metadata
+    constructor({ message = ReasonPhrases.CREATED, metadata, context, statusCode = StatusCodes.CREATED, reasonPhrases = ReasonPhrases.CREATED }) {
+        super(message, metadata, context, statusCode, reasonPhrases)
     }
 }
 

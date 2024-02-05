@@ -5,7 +5,7 @@ const router = express.Router();
 
 const UserController = require('../../controllers/user.contr');
 
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 const { authenticationUser } = require('../../middlewares/auth.midware');
 
 router.patch('/update-user-info', authenticationUser, asyncHandler(UserController.handleUpdateUserInfo))

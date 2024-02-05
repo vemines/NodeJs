@@ -7,6 +7,7 @@ const { BadRequestError } = require("../utils/error.response");
 class UploadController {
     static handleUploadImageFromUrl = async (req, res, next) => {
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'upload successfully',
             metadata: await UploadService.uploadImageFromUrl({
                 url: req.body.url,
@@ -19,6 +20,7 @@ class UploadController {
         const { file } = req
         if (!file) throw new BadRequestError('required file')
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'upload successfully',
             metadata: await UploadService.uploadImageFromLocal({
                 file,
@@ -31,6 +33,7 @@ class UploadController {
         const { files } = req
         if (!files) throw new BadRequestError('required files')
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'upload successfully',
             metadata: await UploadService.uploadImagesFromLocal({
                 files,
@@ -44,6 +47,7 @@ class UploadController {
         if (!file) throw new BadRequestError('required file')
 
         new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'upload s3 successfully',
             metadata: await UploadService.uploadImageToS3({ file })
         }).send(res);

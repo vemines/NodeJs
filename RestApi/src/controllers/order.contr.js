@@ -5,11 +5,13 @@ const { SuccessResponse } = require('../utils/success.response')
 class CheckoutController {
     static handleOrderReview = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             metadata: await OrderService.orderReview({ payload: req.body })
         }).send(res)
     }
     static handleCreateOrder = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             metadata: await OrderService.createOrder({ payload: { ...req.body, usr_id: req.payload._id } })
         }).send(res)
     }

@@ -6,7 +6,7 @@ const router = express.Router();
 const ApiKeyController = require('../../controllers/api.key.contr');
 
 const { apikey, permission } = require('../../middlewares/auth.midware');
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 
 router.post('/create', asyncHandler(ApiKeyController.handleCreateNewApiKey))
 router.post(

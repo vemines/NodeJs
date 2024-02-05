@@ -5,7 +5,7 @@ const router = express.Router()
 
 const CartController = require('../../controllers/cart.contr')
 
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 
 router.post('/add-product', asyncHandler(CartController.handleAddToCart))
 router.post('/update-cart', asyncHandler(CartController.handleUpdateCart))

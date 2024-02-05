@@ -6,7 +6,7 @@ const router = express.Router()
 
 const DiscountController = require('../../controllers/discount.contr')
 
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 const { authenticationUser, authenticationShop } = require('../../middlewares/auth.midware');
 
 router.post('/create-discount', authenticationUser, authenticationShop,

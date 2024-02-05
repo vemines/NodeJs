@@ -199,16 +199,16 @@ class Product {
             }
             await InventoryService.createInventory({ payload: invenPayload })
 
-            await NotifyService.pushNotifyByShop({
-                type: 'SHOP-001',
-                receivedId: foundShop.usr_slug,
-                senderId: this.prod_shop,
-                noti_content: `Shop created new product`,
-                options: {
-                    prod_name: this.prod_name,
-                    shop_name: foundShop.shop_name
-                }
-            })
+            // await NotifyService.pushNotifyByShop({
+            //     type: 'SHOP-001',
+            //     receivedId: "",
+            //     senderId: this.prod_shop,
+            //     noti_content: `Shop created new product`,
+            //     options: {
+            //         prod_name: this.prod_name,
+            //         shop_name: foundShop.shop_name
+            //     }
+            // })
         }
 
         return newProduct

@@ -5,7 +5,7 @@ const router = express.Router();
 
 const NotifyController = require('../../controllers/notify.contr');
 
-const { asyncHandler } = require('../../utils/async.handler.util');
+const asyncHandler = require('../../utils/async.handler.util');
 const { authenticationUser } = require('../../middlewares/auth.midware');
 
 router.get('/get-notifies', authenticationUser,

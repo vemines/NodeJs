@@ -6,6 +6,7 @@ const CartService = require('../services/cart.svc')
 class CartController {
     static handleAddToCart = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Add to cart success',
             metadata: await CartService.addToCart({
                 usr_id: req.body.usr_id,
@@ -17,6 +18,7 @@ class CartController {
 
     static handleUpdateCart = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Update cart Success',
             metadata: await CartService.updateCart({
                 usr_id: req.body.usr_id,
@@ -28,6 +30,7 @@ class CartController {
 
     static handleRemoveProduct = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Delete product in cart Success',
             metadata: await CartService.deleteUserCart({
                 usr_id: req.body.usr_id,
@@ -38,6 +41,7 @@ class CartController {
 
     static handleGetListCart = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Get cart Success',
             metadata: await CartService.getListUserCart({
                 usr_id: req.query.usr_id
@@ -47,6 +51,7 @@ class CartController {
 
     static handleClearCart = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'Clear cart Success',
             metadata: await CartService.clearUserCart({
                 usr_id: req.query.usr_id
@@ -56,6 +61,7 @@ class CartController {
 
     static handleTransferUserId = async (req, res, next) => {
         return new SuccessResponse({
+            context: req.baseUrl + req.url,
             message: 'tranfers user id Success',
             metadata: await CartService.transferCartUserId({
                 ...req.body

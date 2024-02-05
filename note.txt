@@ -20,6 +20,20 @@ req.refresh_token: refresh token from request header
 req.access_token: access token from request header
 req.shop_id: "_id" of shop Document
 
+/// Rbac Api ////
+// accesscontrol permissions format
+let grantList = [
+    { role: 'admin', resource: 'video', action: 'create:any', attributes: '*, !views' },
+    { role: 'admin', resource: 'video', action: 'read:any', attributes: '*' },
+    { role: 'admin', resource: 'video', action: 'update:any', attributes: '*, !views' },
+    { role: 'admin', resource: 'video', action: 'delete:any', attributes: '*' },
+ 
+    { role: 'user', resource: 'video', action: 'create:own', attributes: '*, !rating, !views' },
+    { role: 'user', resource: 'video', action: 'read:any', attributes: '*' },
+    { role: 'user', resource: 'video', action: 'update:own', attributes: '*, !rating, !views' },
+    { role: 'user', resource: 'video', action: 'delete:own', attributes: '*' }
+]; 
+
 /// Comment Api ////
 // Nested comment (watch note-img/nested-comment.png)
 
@@ -32,6 +46,9 @@ add/remove permissions need manual add "akp00002"
 1. create a temporary reservation when the user adds/update a product.
 2. convert to permanent reservation when the user checks out.
 3. if order incomplete, remove the reservation (at user's session or cart expires or removes the product from their cart)
+
+////  Order Api  ////
+Using optimistic locking (FIFO) for place order
 
 ////  Upload Api  ////
 Upload image to cloudinary, free tier is good
@@ -82,4 +99,4 @@ cart_products: { $elemMatch: { prod_id: prod_id } }
 const update = { public_key, private_key, refresh_token };
 if (token.refresh_token !== "") update.$addToSet = { refresh_tokens_used: foundToken.refresh_token };
 
-// middle findOneAndUpdate have pre 2 times,2nd can be undefined so avoid using it
+// middle findOneAndUpdate have .pre 2 times, 2nd can be undefined so avoid using it

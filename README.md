@@ -5,7 +5,7 @@ npm i uuid --save
 
 
 git add .
-git commit -m "add user sub/unsub shop, get notify"
+git commit -m "remove .vscode folder"
 git push
 
 

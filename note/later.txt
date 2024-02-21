@@ -1,0 +1,6 @@
+timestamp mechaism          // valid of request after time
+signature / encrypt         // avoid change payload
+nonce                       // replay attack (like post 2 time)
+rate limit                  // allow x request in n minute
+blacklist / whitelist       // ip access limit
+validate all params         // ip access limit

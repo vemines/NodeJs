@@ -1,3 +1,25 @@
+//// Logger ////
+// success/info log path: src/utils/success.response.js uncomment here
+const AppLogger = require('./loggers/log.logger')
+AppLogger.log({ message: this.message, context, metadata: this.metadata })
+
+// error log path: src/app.js uncomment here
+const AppLogger = require('./loggers/log.logger')
+AppLogger.error({
+     message: error.message || 'Internal Server Error',
+     context: req.baseUrl + req.url,
+     metadata: error.status || 500
+ })
+
+//// function with arrow return can't access this. Replace with function() { } ////
+function connectMongo(uri) {
+    const db = mongoose.createConnection(uri)
+    db.on('connected', function () {    // () => { } can't access this
+        console.log(`Connect Mongodb success: ${this.name} `)
+    })
+    return db
+}
+
 //// Address in database ////
 // reduce { "city",  "state", "country", "address"} to {"address", "address_city"}
 

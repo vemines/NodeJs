@@ -1,0 +1,7 @@
+//// Comment 1 Api ////
+// Base on hack news comment
+
+//// injection with gte: "" in mongoose ////
+
+//// hateoas Api ////
+// Hateoas is some url in response that support explore api faster, ex: docs/guides url when error, url get user info after login

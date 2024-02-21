@@ -1,0 +1,59 @@
+1/ splits array role_grants to each object
+
+{ $unwind: '$role_grants' },
+
+2/
+
+{
+  $lookup: {     // start join collection, allways return array
+      from: 'resources',  // collection need join
+      localField: 'role_grants.resource', // field of repo need join
+      foreignField: '_id',  // field of resource need join
+      as: 'resource'  // name of join result
+  }
+},
+
+3/ resource from array to object (array because lookup.and only 1 object so command only remove array, no split)
+
+{ $unwind: '$resource' },
+
+4/ select field for format array of accesscontrol
+
+{
+    $project: {
+        role: '$role_name',
+        resource: '$resource.src_name',
+        action: '$role_grants.actions',
+        attributes: '$role_grants.attributes'
+    }
+},
+
+5/ split actions to action
+
+{ $unwind: '$resource' },
+
+6/ remove _id field
+
+$project: {
+    _id: 0,
+    role: 1,
+    resource: 1,
+    action: '$action',
+    attributes: 1
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

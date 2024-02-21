@@ -4,5 +4,110 @@
     "prefix": "log",
     "body": ["console.log(`::::::::::::${$1}`);"],
     "description": "Log output to console"
+  },
+  "Init route nodejs": {
+    "prefix": "ijsroute",
+    "body": [
+      "'use strict'",
+      "",
+      "const express = require('express')",
+      "const router = express.Router()",
+      "",
+      "const ${1:Name}Controller = require('../../controllers/${1:name}.contr')",
+      "",
+      "const asyncHandler = require('../../utils/async.handler.util');",
+      "",
+      "router.post('/${2:route-name}', asyncHandler(${1:Name}Controller.handleFunction))",
+      "",
+      "module.exports = router"
+    ],
+    "description": "Init routes express for workspace"
+  },
+  "Init controller nodejs": {
+    "prefix": "ijscontroller",
+    "body": [
+      "'use strict';",
+      "",
+      "const { SuccessResponse } = require('../utils/success.response');",
+      "const ${1:Name}Service = require('../services/${1:name}.svc')",
+      "",
+      "class ${1:Name}Controller {",
+      "    static handleFunction = async (req, res, next) => {",
+      "        new SuccessResponse({",
+      "            message: 'description of function',",
+      "            metadata: await ${1:Name}Service.functionName({ payload: {} })",
+      "        }).send(res)",
+      "    }",
+      "}",
+      "",
+      "module.exports = ${1:Name}Controller"
+    ],
+    "description": "Init controller for workspace"
+  },
+  "Init service nodejs": {
+    "prefix": "ijsservice",
+    "body": [
+      "'use strict'",
+      "",
+      "const ${1:Name}Repository = require('../models/repositories/${1:name}.repo')",
+      "",
+      "const { toObjectIdMongo } = require('../utils')",
+      "const { NotFoundError } = require('../utils/error.response')",
+      "",
+      "class ${1:Name}Service {",
+      "    static functionName = async ({ payload }) => {",
+      "",
+      "    }",
+      "}",
+      "",
+      "module.exports = ${1:Name}Service"
+    ],
+    "description": "Init service for workspace"
+  },
+  "Init mongo repository nodejs": {
+    "prefix": "ijsrepository",
+    "body": [
+      "'use strict'",
+      "",
+      "const model = require('../${1:name}.model')",
+      "",
+      "class ${1:Name}Repository {",
+      "    static create = async ({ payload }) => {",
+      "        return await model.create(payload)",
+      "    }",
+      "",
+      "    static find = async ({ filter, projection, options, limit, skip, sort }) => {",
+      "        let query = model.find(filter, projection, options)",
+      "        if (skip !== undefined) query = query.skip(skip)",
+      "        if (limit !== undefined) query = query.limit(limit)",
+      "        if (sort !== undefined) query = query.sort(sort)",
+      "        return await query.exec()",
+      "    }",
+      "}",
+      "",
+      "module.exports =  ${1:Name}Repository"
+    ],
+    "description": "Init mongo repository for workspace"
+  },
+  "Init mongo model nodejs": {
+    "prefix": "ijsmodel",
+    "body": [
+      "'use strict'",
+      "",
+      "const { model, Schema, Types } = require('mongoose');",
+      "",
+      "const DOCUMENT_NAME = '${1:name}'",
+      "const COLLECTION_NAME = '${1:name}s'",
+      "",
+      "const ${1:name}Schema = new Schema({",
+      "    fields_name: { type: String, required: true },",
+      "}, {",
+      "    collection: COLLECTION_NAME,",
+      "    timestamps: true",
+      "})",
+      "",
+      "module.exports = model(DOCUMENT_NAME, ${1:name}Schema)"
+    ],
+    "description": "Init mongo model for workspace"
   }
 }

@@ -20,7 +20,7 @@ const getUnSelectData = ({ fields = [] }) => {
     return Object.fromEntries(fields.map(el => [el, 0]))
 }
 
-const randomString = () => crypto.randomBytes(16).toString('hex')
+const randomString = () => crypto.randomBytes(4).toString('hex')
 
 const removeUndefinedObject = obj => {
     Object.keys(obj).forEach(k => {
@@ -59,16 +59,6 @@ function getFieldsNotUndefinedFromObject({ object, fields = [] }) {
     return updateFields;
 }
 
-function createSelectProjection({ select = [] }) {
-    // Map the select array to include the fields and join them with a space
-    return select.map(field => field).join(' ');
-}
-
-function createUnSelectProjection({ unselected = [] }) {
-    // Map the select array to include the fields and join them with a space
-    return unselected.map(field => `-${field}`).join(' ');
-}
-
 module.exports = {
     toObjectIdMongo,
     getInfoData,
@@ -77,7 +67,5 @@ module.exports = {
     removeUndefinedObject,
     updateNestedObjectParser,
     randomString,
-    getFieldsNotUndefinedFromObject,
-    createSelectProjection,
-    createUnSelectProjection
+    getFieldsNotUndefinedFromObject
 }   

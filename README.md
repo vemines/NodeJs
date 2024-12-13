@@ -6,12 +6,3 @@ npm i express morgan helmet compression mongoose dotenv crypto lodash jsonwebtok
 // tips js 01
 mongo-sanitize                  for fix injection of query
 npm i mongo-sanitize --save
-
-npm i mongo-sanitize --save
-
-git add .
-git commit -m "remove .vscode folder"
-git push
-
-
-
